@@ -1,0 +1,142 @@
+[gd_scene load_steps=12 format=1]
+
+[ext_resource path="res://Unit.gd" type="Script" id=1]
+[ext_resource path="res://assets/IsoUnits/knight-0.png" type="Texture" id=2]
+[ext_resource path="res://assets/IsoUnits/knight-1.png" type="Texture" id=3]
+[ext_resource path="res://assets/IsoUnits/knight-back-0.png" type="Texture" id=4]
+[ext_resource path="res://assets/IsoUnits/knight-back-1.png" type="Texture" id=5]
+[ext_resource path="res://assets/move-icon.png" type="Texture" id=6]
+[ext_resource path="res://assets/sword-icon.png" type="Texture" id=7]
+[ext_resource path="res://assets/magic-icon.png" type="Texture" id=8]
+[ext_resource path="res://assets/shield-icon.png" type="Texture" id=9]
+
+[sub_resource type="CircleShape2D" id=1]
+
+custom_solver_bias = 0.0
+radius = 10.0
+
+[sub_resource type="SpriteFrames" id=2]
+
+animations = [ {
+"frames": [  ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 2 ), ExtResource( 3 ) ],
+"loop": true,
+"name": "knight",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 4 ), ExtResource( 5 ) ],
+"loop": true,
+"name": "knight-back",
+"speed": 5.0
+} ]
+
+[node name="Unit" type="Area2D"]
+
+input/pickable = true
+shapes/0/shape = SubResource( 1 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+shapes/0/trigger = false
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+script/script = ExtResource( 1 )
+
+[node name="AnimatedSprite2" type="AnimatedSprite" parent="."]
+
+frames = SubResource( 2 )
+animation = "knight"
+offset = Vector2( 0, -20 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+shape = SubResource( 1 )
+trigger = false
+_update_shape_index = 0
+
+[node name="Tween" type="Tween" parent="."]
+
+playback/process_mode = 1
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
+
+[node name="Name" type="Label" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = -26.0
+margin/top = -89.0
+margin/right = 23.0
+margin/bottom = -75.0
+text = "Loading"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Chat" type="Label" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 30.0
+margin/top = -43.0
+margin/right = 133.0
+margin/bottom = -12.0
+text = "Chat"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="HP" type="Label" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = -29.0
+margin/top = 14.0
+margin/right = 28.0
+margin/bottom = 34.0
+text = "50 / 50"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="StanceMove" type="Sprite" parent="."]
+
+transform/pos = Vector2( -30, -60 )
+transform/scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 6 )
+
+[node name="StanceAttack" type="Sprite" parent="."]
+
+visibility/visible = false
+transform/pos = Vector2( -30, -60 )
+transform/scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 7 )
+
+[node name="StanceMagic" type="Sprite" parent="."]
+
+visibility/visible = false
+transform/pos = Vector2( -30, -60 )
+transform/scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 8 )
+
+[node name="StanceShield" type="Sprite" parent="."]
+
+visibility/visible = false
+transform/pos = Vector2( -30, -60 )
+transform/scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 9 )
+
+[connection signal="tween_complete" from="Tween" to="." method="_on_Tween_tween_completed"]
+
+

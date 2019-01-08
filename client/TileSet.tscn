@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/IsometricLandscapes/PNG/landscapeTiles_083.png" type="Texture" id=1]
+
+[sub_resource type="ConvexPolygonShape2D" id=1]
+
+custom_solver_bias = 0.0
+points = PoolVector2Array( 0, -10, 8.66025, 5, -8.66025, 5 )
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Wall" type="Sprite" parent="." index="0"]
+
+position = Vector2( 128.771, 110.771 )
+texture = ExtResource( 1 )
+offset = Vector2( 0, -25 )
+_sections_unfolded = [ "Offset", "Transform", "Visibility", "Z Index" ]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Wall" index="0"]
+
+input_pickable = false
+collision_layer = 1
+collision_mask = 1
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 1.0
+bounce = 0.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall/StaticBody2D" index="0"]
+
+position = Vector2( -0.870508, -5.22498 )
+scale = Vector2( 5.07492, 3.2204 )
+shape = SubResource( 1 )
+
+

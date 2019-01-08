@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=1]
+
+[ext_resource path="res://assets/IsometricLandscapes/PNG/landscapeTiles_083.png" type="Texture" id=1]
+
+[node name="tiles2" type="Node2D"]
+
+[node name="Sprite" type="Sprite" parent="."]
+
+texture = ExtResource( 1 )
+
+

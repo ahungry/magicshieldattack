@@ -1,0 +1,141 @@
+extends Node
+
+# All the SDK / network related stuff here.
+
+signal ack(json)
+signal sdk_chat(json)
+signal sdk_login(json)
+signal sdk_world(json)
+signal sdk_world_map(json)
+
+var stance = "attack"
+var step = 0
+var attack_queue = []
+var move_queue = []
+var username = ""
+var password = ""
+var headers = ["Content-Type: application/json"]
+var use_ssl = false
+#var host = "http://api.magicshieldattack.com"
+var host = world.host
+
+# For now, auth is just the name.
+# TODO: Make auth a proper JWT from a login.
+func set_auth(u, p):
+	username = u
+	password = p
+
+func set_step(s):
+	step = s
+
+func set_stance(s):
+	stance = s
+
+func _ack(result, response_code, headers, body):
+	var json = JSON.parse(body.get_string_from_utf8())
+	if not json: return
+	if not json.result: return
+	emit_signal("ack", json.result)
+
+func parse_response(body):
+	var json = JSON.parse(body.get_string_from_utf8())
+	if not json: return
+	if not json.result: return
+	return json.result
+
+func cb_attack(result, response_code, headers, body):
+	pass
+
+func cb_move(result, response_code, headers, body):
+	pass
+
+func cb_chat(result, response_code, headers, body):
+	if body:
+		emit_signal("sdk_chat", parse_response(body))
+
+func cb_login(result, response_code, headers, body):
+	if body:
+		emit_signal("sdk_login", parse_response(body))
+
+func cb_world(result, response_code, headers, body):
+	if body:
+		emit_signal("sdk_world", parse_response(body))
+
+func cb_world_map(result, response_code, headers, body):
+	if body:
+		emit_signal("sdk_world_map", parse_response(body))
+
+func _post(cb, uri, data_to_send):
+	var http = HTTPRequest.new()
+	add_child(http)
+	http.connect("request_completed", self, cb, [])
+	# Convert data to json string:
+	var query = JSON.print(data_to_send)
+	var url = host + uri
+	printt("Request to: ", url, "With: ", query)
+	http.request(url, headers, use_ssl, HTTPClient.METHOD_POST, query)
+
+func _get(cb, uri):
+	var http = HTTPRequest.new()
+	add_child(http)
+	http.connect("request_completed", self, cb, [])
+	var url = host + uri
+	#printt("Request to: ", url)
+	http.request(url)
+
+# TODO: Wire this up to an http callback
+func login_save():
+	pass
+	#var save_game = File.new()
+	#save_game.open("user://savegame.save", File.WRITE)
+	#save_game.store_line(to_json({"player_name": player}))
+	#save_game.close()
+
+func login(n):
+	_post("cb_login", "/login.json", {"name": n})
+
+func input(cb, d):
+	d.step = step
+	_post(cb, "/input.json", d)
+
+func chat(chat):
+	input("cb_chat", {"action": "chat", "chat": chat, "name": username})
+
+func _move(dir):
+	input("cb_move", {"action": "move", "dir": dir, "name": username})
+
+func move(dir):
+	move_queue.push_back({"action": "move", "dir": dir, "name": username})
+
+func attack(dir):
+	attack_queue.push_back({"action": "attack", "dir": dir, "name":
+	username, "stance": stance})
+
+func world():
+	_get("cb_world", "/world.json?step=" + str(step + 1))
+
+func world_map():
+	_get("cb_world_map", "/world-map.json")
+
+func _process_move_queue():
+	if move_queue.size() == 0: return
+	input("cb_move", move_queue[0])
+	move_queue = []
+
+func _process_attack_queue():
+	if attack_queue.size() == 0: return
+	input("cb_attack", attack_queue[0])
+	attack_queue = []
+
+func process_queues():
+	_process_move_queue()
+	_process_attack_queue()
+
+func _ready():
+	var qt = Timer.new()
+	qt.process_mode = 1
+	qt.wait_time = .25
+	qt.one_shot = false
+	qt.autostart = true
+	qt.connect('timeout', self, 'process_queues', [])
+	add_child(qt)

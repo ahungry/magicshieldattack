@@ -1,0 +1,10 @@
+* Export/client notes
+Godot 3 does not support GLES 2, only 3, therefore until it does in
+3.10 release, it (export targets for Android) will not work with
+certian Android devices:
+
+https://github.com/godotengine/godot/issues/16476
+
+Option is to try to compile master and run with the linked templates
+there, or to write the client in 2 as well as 3 (3 has had other
+stuttering issues before, so maybe a 2 rewrite is worthwhile).

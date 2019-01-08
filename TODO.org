@@ -1,0 +1,11 @@
+* TODO Multiple levels
+Add a hole that will drop players to a lower level (new world map
+query), as well as an item to take them up a level (a rope or portal
+or something).
+* TODO Visible on-ground items
+Probably a new endpoint call to query + display all grabbable items on
+the ground.
+* TODO Clean up the UI
+Particularly for mobile, need a button to flip between move/m/s/a
+* TODO Add music / sounds when events occur
+Self explanatory
