@@ -139,7 +139,6 @@ texture = ExtResource( 4 )
 
 [node name="LeftButton" type="Button" parent="."]
 
-editor/display_folded = true
 anchor/left = 3
 anchor/top = 1
 anchor/right = 3
@@ -374,5 +373,17 @@ lines_skipped = 0
 max_lines_visible = -1
 
 [connection signal="button_down" from="NameButton" to="." method="_on_Button_button_down"]
+
+[connection signal="button_down" from="UpButton" to="." method="_on_UpButton_button_down"]
+
+[connection signal="button_down" from="LeftButton" to="." method="_on_LeftButton_button_down"]
+
+[connection signal="button_down" from="RightButton" to="." method="_on_RightButton_button_down"]
+
+[connection signal="button_down" from="DownButton" to="." method="_on_DownButton_button_down"]
+
+[connection signal="button_down" from="SelectButton" to="." method="_on_SelectButton_button_down"]
+
+[connection signal="button_down" from="StartButton" to="." method="_on_StartButton_button_down"]
 
 

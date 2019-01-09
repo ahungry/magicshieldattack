@@ -50,3 +50,7 @@ func _on_SelectButton_button_down():
 
 func _on_NameButton_button_down():
 	pass # replace with function body
+
+
+func _on_StartButton_button_down():
+	pass # replace with function body
