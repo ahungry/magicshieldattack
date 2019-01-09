@@ -344,6 +344,13 @@
 (defn chat-player [chat p]
   (conj p {:chat chat}))
 
+;; Our useful predicates or various states of things here.
+(defn mob? [unit]
+  (:mob unit))
+
+(defn player? [unit]
+  (not (mob? unit)))
+
 (defn living? [{:keys [hp]}]
   (> hp 0))
 
@@ -414,8 +421,8 @@
 (defn msa-attack-scale-message [attacker defender]
   (case (msa-attack-scale (:stance attacker) (:stance defender))
     1 ""
-    2 (format "\nYour %s beats %s! Double damage!" (:stance attacker) (:stance defender))
-    0.5 (format "\nYour %s loses to %s! Half damage!" (:stance attacker) (:stance defender))
+    2 (format "Your %s beats %s! Double damage!\n" (:stance attacker) (:stance defender))
+    0.5 (format "Your %s loses to %s! Half damage!\n" (:stance attacker) (:stance defender))
     true))
 
 (defn damage-formula [{:keys [atk xp] :as attacker}
@@ -432,8 +439,9 @@
     (update-event! name {:event "attack" :x x :y y})
     (add-feedback-to-player
      name
-     (format "You hit someone for %s damage!%s" damage-done
-             (msa-attack-scale-message attacker defender)))
+     (format "%sYou hit someone for %s damage!"
+             (msa-attack-scale-message attacker defender)
+             damage-done))
     ;; TODO : Make xp assignment better (dynamic)
     (update-xp! name 1)
     (update-unit! (:name defender) (conj defender {:was_hit true
@@ -506,10 +514,10 @@
   (filter #(:mob %) (get-world)))
 
 (defn get-all-players []
-  (filter #(not (:mob %)) (get-world)))
+  (filter player? (get-world)))
 
 (defn get-all-living-players []
-  (filter #(> (:hp %) 0) (get-all-players)))
+  (filter living? (get-all-players)))
 
 (defn point-to-point-distance [a b]
   (+ (Math/abs (- (:x a) (:x b)))
