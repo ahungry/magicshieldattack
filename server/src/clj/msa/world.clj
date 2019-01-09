@@ -414,8 +414,8 @@
 (defn msa-attack-scale-message [attacker defender]
   (case (msa-attack-scale (:stance attacker) (:stance defender))
     1 ""
-    2 (format "Your %s beats %s! Double damage!" (:stance attacker) (:stance defender))
-    0.5 (format "Your %s loses to %s! Half damage!" (:stance attacker) (:stance defender))
+    2 (format "\nYour %s beats %s! Double damage!" (:stance attacker) (:stance defender))
+    0.5 (format "\nYour %s loses to %s! Half damage!" (:stance attacker) (:stance defender))
     true))
 
 (defn damage-formula [{:keys [atk xp] :as attacker}
@@ -432,7 +432,7 @@
     (update-event! name {:event "attack" :x x :y y})
     (add-feedback-to-player
      name
-     (format "You hit someone for %s damage!\n%s" damage-done
+     (format "You hit someone for %s damage!%s" damage-done
              (msa-attack-scale-message attacker defender)))
     ;; TODO : Make xp assignment better (dynamic)
     (update-xp! name 1)
@@ -508,6 +508,9 @@
 (defn get-all-players []
   (filter #(not (:mob %)) (get-world)))
 
+(defn get-all-living-players []
+  (filter #(> (:hp %) 0) (get-all-players)))
+
 (defn point-to-point-distance [a b]
   (+ (Math/abs (- (:x a) (:x b)))
      (Math/abs (- (:y a) (:y b)))))
@@ -551,7 +554,7 @@
   "Try to choose some sensible action to take.  Lets start by
   simply moving towards another player and trying to follow them."
   [{:keys [x y] :as mob}]
-  (let [players (get-all-players)
+  (let [players (get-all-living-players)
         comparator (partial ptp-comparator mob)
         closest (first (sort comparator players))]
     (when closest
