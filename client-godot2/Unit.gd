@@ -211,8 +211,7 @@ func got_hit():
 func _got_hit():
 	if got_hit_counter > 5: return
 	got_hit_counter += 1
-	# TODO: Re-enable somehow
-	#self.set_modulate(Color(.8, 0, 0))
+	get_node('AnimatedSprite2').set_modulate(Color(0.8, 0, 0))
 	var got_hit_timer = Timer.new()
 	got_hit_timer.wait_time = 0.05
 	got_hit_timer.process_mode = 1
@@ -222,8 +221,7 @@ func _got_hit():
 	add_child(got_hit_timer)
 
 func _not_hit():
-	# TODO: Re-enable somehow
-	#self.set_modulate(Color(1, 1, 1))
+	get_node('AnimatedSprite2').set_modulate(Color(1, 1, 1))
 	var not_hit_timer = Timer.new()
 	not_hit_timer.wait_time = 0.05
 	not_hit_timer.process_mode = 1
