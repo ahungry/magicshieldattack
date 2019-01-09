@@ -47,11 +47,11 @@ func parse_response(body):
 	# gd2 parse
 	var json = Dictionary()
 	json.parse_json(body.get_string_from_utf8())
-	printt("JSON WAS: ", json)
+	#printt("JSON WAS: ", json)
 	if not TYPE_DICTIONARY == typeof(json): return
 	#if not TYPE_DICTIONARY == typeof(json.result): return
-	printt("Hmm: ", json.size())
-	printt("Hmm: ", json.keys())
+	#printt("Hmm: ", json.size())
+	#printt("Hmm: ", json.keys())
 
 	return json
 	#return json.result
