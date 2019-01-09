@@ -516,7 +516,7 @@
      (Math/abs (- (:y a) (:y b)))))
 
 (defn ptp-comparator [mob a b]
-  (> (point-to-point-distance a mob)
+  (< (point-to-point-distance a mob)
      (point-to-point-distance b mob)))
 
 (defn mob-ai-choose-direction [mob player]
