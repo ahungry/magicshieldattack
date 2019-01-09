@@ -1,4 +1,4 @@
-extends Node
+extends Node2D
 
 signal swipe
 
@@ -11,10 +11,12 @@ func _ready():
 func _unhandled_input(event):
 	printt("Handling some unhandled input")
 	if event.is_action_pressed("ui_click"):
-		var pos = get_viewport().get_mouse_position()
+		#var pos = get_viewport().get_mouse_position()
+		var pos = get_global_mouse_pos()
 		swipe_start = pos
 	if event.is_action_released("ui_click"):
-		var pos = get_viewport().get_mouse_position()
+		#var pos = get_viewport().get_mouse_position()
+		var pos = get_global_mouse_pos()
 		_calculate_swipe(pos)
 
 func _calculate_swipe(swipe_end):
