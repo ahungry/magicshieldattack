@@ -341,10 +341,10 @@ func change_stance(stance):
 	if "attack" == stance: set_action(3)
 
 func _input(event):
-	if event.is_action_pressed('scroll_up'):
-		get_node('Camera2D').zoom = get_node('Camera2D').zoom - Vector2(0.1, 0.1)
-	if event.is_action_pressed('scroll_down'):
-		get_node('Camera2D').zoom = get_node('Camera2D').zoom + Vector2(0.1, 0.1)
+	#if event.is_action_pressed('scroll_up'):
+	#	get_node('Camera2D').zoom = get_node('Camera2D').zoom - Vector2(0.1, 0.1)
+	#if event.is_action_pressed('scroll_down'):
+	#	get_node('Camera2D').zoom = get_node('Camera2D').zoom + Vector2(0.1, 0.1)
 
 	if event.is_action_pressed('ui_accept'):
 		return type_text()

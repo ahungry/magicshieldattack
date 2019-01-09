@@ -5,7 +5,11 @@ signal swipe
 var swipe_start = null
 var minimum_drag = 50
 
+func _ready():
+	set_process_unhandled_input(true)
+
 func _unhandled_input(event):
+	printt("Handling some unhandled input")
 	if event.is_action_pressed("ui_click"):
 		var pos = get_viewport().get_mouse_position()
 		swipe_start = pos

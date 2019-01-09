@@ -5,10 +5,11 @@ export var speed = 50
 var velocity = Vector2()
 
 func _input(event):
-	if event.is_action_pressed('scroll_up'):
-		$Camera2D.zoom = $Camera2D.zoom - Vector2(0.1, 0.1)
-	if event.is_action_pressed('scroll_down'):
-		$Camera2D.zoom = $Camera2D.zoom + Vector2(0.1, 0.1)
+	pass
+	#if event.is_action_pressed('scroll_up'):
+	#	$Camera2D.zoom = $Camera2D.zoom - Vector2(0.1, 0.1)
+	#if event.is_action_pressed('scroll_down'):
+	#	$Camera2D.zoom = $Camera2D.zoom + Vector2(0.1, 0.1)
 
 func get_input():
 	velocity = Vector2()
