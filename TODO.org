@@ -5,7 +5,7 @@ or something).
 * TODO Visible on-ground items
 Probably a new endpoint call to query + display all grabbable items on
 the ground.
-* TODO Clean up the UI
+* DONE Clean up the UI
 Particularly for mobile, need a button to flip between move/m/s/a
 * TODO Add music / sounds when events occur
 Self explanatory
