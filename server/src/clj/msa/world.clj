@@ -406,7 +406,9 @@
   (let [p (find-by-name n)]
     (update-unit! n (conj p {:feedback (take-latest-5 (conj (:feedback p) f))}))))
 
-(defn msa-attack-scale [a-stance d-stance]
+(defn msa-attack-scale
+  "When two units are comparing stances, see which wins."
+  [a-stance d-stance]
   (cond
     (= a-stance d-stance) 1
     (and (= a-stance "magic") (= d-stance "shield")) 2
