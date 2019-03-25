@@ -80,22 +80,16 @@
 ;; (def stub
 ;;   (atom {:name "You" :x 0 :y 0 :gear [i-red-scarf]}))
 (defn map-to-vec [col]
-  (into [] (map (fn [[k v]] v) col)))
+  (into [] (map (fn [[_k v]] v) col)))
 
 (def world-map
-  (atom
-   [[0 0 0 0 0]
-    ])
-  )
+  (atom nil))
 
 (defn my-rand-int [n]
   (int (* (+ 1 n) (rand 1))))
 
 ;;  Track what "step" or world cycle we're on.
 (def world-step (atom 0))
-
-(def world-map
-  (atom nil))
 
 (defn map-into
   "Eagerly maps into a vector the user fn to the col."
@@ -239,7 +233,7 @@
 (defn get-world []
   (map-to-vec @world))
 
-(defn get-world-step [{:keys [step] :as params}]
+(defn get-world-step [{:keys [step]}]
   (let [min-step (Integer/parseInt (or step 0))]
     ;; User requests their min step (next update cycle).
     ;; If we haven't hit it yet, pause here until we do, so they get
@@ -271,12 +265,12 @@
   (filter #(and (= x (:x %))
                       (= y (:y %))) (get-world)))
 
-(defn empty-coords? [{:keys [x y] :as m}]
+(defn empty-coords? [m]
   (not (> (count (find-by-coords m)) 0)))
 
 (defn valid-coords?
   "A value of 0 indicates an obstacle the player cannot walk on."
-  [{:keys [x y] :as m}]
+  [{:keys [x y]}]
   (> (get-in (get-world-map) [x y]) 0))
 
 (defn find-by-name [s]
@@ -367,7 +361,7 @@
 
 (defn handle-move [{:keys [dir name]}]
   (let [player (find-by-name name)
-        others (all-but-name name)]
+        _others (all-but-name name)]
     (when player
       (cond
         (not (living? player))
@@ -474,7 +468,7 @@
 
 (defn handle-attack [{:keys [dir name stance]}]
   (let [player (find-by-name name)
-        others (all-but-name name)]
+        _others (all-but-name name)]
     (when player
       (cond
         (not (living? player))
@@ -493,7 +487,7 @@
 
 (defn handle-chat [{:keys [chat name]}]
   (let [player (find-by-name name)
-        others (all-but-name name)]
+        _others (all-but-name name)]
     (when player
       (update-unit! name (chat-player chat player)))))
 
@@ -654,7 +648,7 @@
   "Go through all the pending events for action requests, AI movements,
   and persisting the game state to disk."
   []
-  (when (< 3 (count (get-all-mobs)))
+  (when (> 3 (count (get-all-mobs)))
     (spawn-mob))
   (when @queue-runner-mutex
     ;; Wipe out all of last round's animation_event
