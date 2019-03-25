@@ -654,7 +654,6 @@
   "Go through all the pending events for action requests, AI movements,
   and persisting the game state to disk."
   []
-  (world-to-disk)
   (when (< 3 (count (get-all-mobs)))
     (spawn-mob))
   (when @queue-runner-mutex
@@ -677,6 +676,7 @@
             (logp (format "P: %s X: %s Y: %s" name x y))) (get-world)))
     (reset! queue nil))
   (swap! world-step inc)
+  (world-to-disk)
   (Thread/sleep 1500))
 
 (defn world-boot []
