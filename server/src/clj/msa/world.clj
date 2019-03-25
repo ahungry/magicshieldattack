@@ -12,6 +12,7 @@
 (declare mob-ai-stance)
 
 (def verbosep nil)
+(def save-file-path "/tmp/msa.edn")
 
 (defn flip
   "Reverse function f arguments."
@@ -214,7 +215,13 @@
    ;;  :Test3 (player "Test3")}
    ))
 
-(defn reset-world []
+(defn world-to-disk []
+  (spit save-file-path @world))
+
+(defn world-from-disk []
+  (reset! world (read-string (slurp save-file-path))))
+
+(defn world-reset []
   (reset! world
           {
            :Test {:x 3 :y 4}
@@ -639,7 +646,11 @@
   [a b]
   (if (and (:mob a) (not (:mob b))) false true))
 
-(defn process-queue []
+(defn process-queue
+  "Go through all the pending events for action requests, AI movements,
+  and persisting the game state to disk."
+  []
+  (world-to-disk)
   (when (< 3 (count (get-all-mobs)))
     (spawn-mob))
   (when @queue-runner-mutex
@@ -664,10 +675,18 @@
   (swap! world-step inc)
   (Thread/sleep 1500))
 
+(defn world-boot []
+  (get-world-map)
+  (spawn-mob))
+
+(defn maybe-world-resume []
+  (if (.exists (clojure.java.io/file save-file-path))
+    (world-from-disk)
+    (world-boot)))
+
 ;; Process over and over
 (defn queue-runner []
-  (get-world-map)
-  (spawn-mob)
+  (maybe-world-resume)
   (future (while true (do (process-queue)))))
 
 (defn start-queue-runner []
