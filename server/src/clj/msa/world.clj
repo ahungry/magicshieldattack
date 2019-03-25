@@ -216,10 +216,14 @@
    ))
 
 (defn world-to-disk []
-  (spit save-file-path @world))
+  (spit save-file-path
+        {:world @world
+         :world-map @world-map}))
 
 (defn world-from-disk []
-  (reset! world (read-string (slurp save-file-path))))
+  (let [disk-data (read-string (slurp save-file-path))]
+    (reset! world-map (:world-map disk-data))
+    (reset! world (:world disk-data))))
 
 (defn world-reset []
   (reset! world
