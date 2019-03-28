@@ -170,7 +170,7 @@
 (defn valid-coords?
   "A value of 0 indicates an obstacle the player cannot walk on."
   [{:keys [x y]}]
-  (> (get-in (get-world-map) [x y]) 0))
+  (> (get-in (get-world-map 0) [x y]) 0))
 
 (defn find-by-name [s]
   ((keyword s) @world))
