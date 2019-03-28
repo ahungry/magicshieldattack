@@ -19,10 +19,10 @@
   {:body (w/handle-input i)})
 
 (defn json-world-map []
-  {:body (w/get-world-map)})
+  {:body (w/get-world-map 0)})
 
 (defn json-world-map-wrapped []
-  {:body {:map (w/get-world-map)}})
+  {:body {:map (w/get-world-map 0)}})
 
 (defn json-world [i]
   {:body (w/get-world-step i)})

@@ -83,7 +83,7 @@
   (into [] (map (fn [[_k v]] v) col)))
 
 (def world-map
-  (atom nil))
+  (atom {}))
 
 (defn my-rand-int [n]
   (int (* (+ 1 n) (rand 1))))
@@ -192,13 +192,15 @@
        generate-room
        generate-room))
 
-(defn set-world-map []
-  (reset! world-map (generate-world-map)))
+(defn set-world-map [n]
+  (let [map-idx (keyword (str n))]
+    (swap! world-map conj {map-idx (generate-world-map)})))
 
-(defn get-world-map []
-  (when (not @world-map)
-    (set-world-map))
-  @world-map)
+(defn get-world-map [n]
+  (let [map-idx (keyword (str n))]
+    (when (not (map-idx @world-map))
+      (set-world-map n))
+    (map-idx @world-map)))
 
 ;; Just some stubbed out player data.
 (def world
@@ -674,7 +676,7 @@
   (Thread/sleep 1500))
 
 (defn world-boot []
-  (get-world-map)
+  (get-world-map 0)
   (spawn-mob))
 
 (defn maybe-world-resume []
