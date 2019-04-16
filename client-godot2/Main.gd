@@ -43,6 +43,7 @@ func _ready():
 	sdk.connect("sdk_world", self, "_ack_world", [])
 	sdk.connect("sdk_world_map", self, "_ack_world_map", [])
 	swiper.connect("swipe", self, "_ack_swipe", [])
+	gesture.connect("pinched", self, "_ack_pinched", [])
 	get_node('HUD').connect("hud_submit", self, "_hud_submit", [])
 	get_node('HUD').hide_chat()
 
@@ -414,3 +415,8 @@ func _ack_swipe(s):
 		return call(move_action, "S")
 	#if "none" == s:
 	#	return next_action()
+
+func _ack_pinched(s):
+	printt("I WAS PINCHED!")
+	printt(s)
+	zoom_out()

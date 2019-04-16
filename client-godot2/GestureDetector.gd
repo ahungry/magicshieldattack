@@ -1,4 +1,5 @@
 # Mobile gesture detection helper
+extends Node2D
 
 signal double_tap
 signal tap

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=1]
+[gd_scene load_steps=8 format=1]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://tiles.tres" type="TileSet" id=2]
@@ -6,7 +6,6 @@
 [ext_resource path="res://assets/isometric_roads/crossroad.png" type="Texture" id=4]
 [ext_resource path="res://assets/isometric_roads/crossroad2.png" type="Texture" id=5]
 [ext_resource path="res://tiles2.tres" type="TileSet" id=6]
-[ext_resource path="res://GestureDetector.tscn" type="PackedScene" id=7]
 
 [sub_resource type="SpriteFrames" id=1]
 
@@ -83,23 +82,5 @@ collision/layers = 1
 collision/mask = 1
 occluder/light_mask = 1
 tile_data = IntArray( 9, 0 )
-
-[node name="GestureDetector" parent="." instance=ExtResource( 7 )]
-
-drag_threshhold = 10
-double_tap_thresh_ms = 500
-double_tap_thresh_distance = 100
-listen_for_multi_drag = true
-listen_for_multi_pinch = true
-listen_for_multi_twist = true
-listen_for_debounced_drag = true
-listen_for_debounced_tap = true
-trigger_last_debounce_only = true
-debug_right_click_enabled = false
-debug_show_clicks_and_drag = false
-twist_precision = 150
-pinch_precision = 70
-drag_precision = 215
-debounce_time_ms = 600
 
 
