@@ -36,6 +36,7 @@ func _calculate_swipe(swipe_end):
 	#		emit_signal("swipe", "down")
 	# North is quadrant 1 (NE one)
 	if abs(swipe.x) > minimum_drag and abs(swipe.y) > minimum_drag:
+		# These all indicate we swiped diagonal up/down/left/right
 		if swipe.x > 0 and swipe.y > 0:
 			emit_signal("swipe", "right")
 		if swipe.x > 0 and swipe.y < 0:
