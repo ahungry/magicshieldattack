@@ -340,6 +340,16 @@ func change_stance(stance):
 	if "shield" == stance: set_action(2)
 	if "attack" == stance: set_action(3)
 
+func zoom_in():
+	var n = get_node('Camera2D')
+	var zoom = n.get_zoom()
+	n.set_zoom(zoom - Vector2(0.1, 0.1))
+
+func zoom_out():
+	var n = get_node('Camera2D')
+	var zoom = n.get_zoom()
+	n.set_zoom(zoom + Vector2(0.1, 0.1))
+
 func _input(event):
 	#if event.is_action_pressed('scroll_up'):
 	#	get_node('Camera2D').zoom = get_node('Camera2D').zoom - Vector2(0.1, 0.1)
@@ -361,6 +371,7 @@ func _input(event):
 	else:
 		move_action = "attack"
 
+	# Movement bindings
 	if event.is_action_pressed('move_up'):
 		return call(move_action, "N")
 	if event.is_action_pressed('move_down'):
@@ -370,6 +381,7 @@ func _input(event):
 	if event.is_action_pressed('move_left'):
 		return call(move_action, "W")
 
+	# Attack bindings
 	if event.is_action_pressed('ui_up'):
 		return change_stance("move")
 	if event.is_action_pressed('ui_down'):
@@ -378,6 +390,12 @@ func _input(event):
 		return change_stance("attack")
 	if event.is_action_pressed('ui_left'):
 		return change_stance("magic")
+
+	# Visibility bindings
+	if event.is_action_pressed('ui_zoom_in'):
+		return zoom_in()
+	if event.is_action_pressed('ui_zoom_out'):
+		return zoom_out()
 
 func _ack_swipe(s):
 	var move_action = ""
