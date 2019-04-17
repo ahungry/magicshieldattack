@@ -1,3 +1,4 @@
+*.apk
 bin/
 html/build.tar.gz
 html/build
