@@ -9,3 +9,7 @@ the ground.
 Particularly for mobile, need a button to flip between move/m/s/a
 * TODO Add music / sounds when events occur
 Self explanatory
+* TODO Need to fix bug with saving data to edn file (it did not persist for some reason)
+Probably a better option would just be to add a sqlite layer for
+persisting the game, that way writes (such as a single bad one) can't
+end up botching the entire game state.
