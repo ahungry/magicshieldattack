@@ -4,7 +4,8 @@
    [clojure.spec.alpha :as s]
    [clojure.spec.gen.alpha :as gen]
    [clojure.spec.test.alpha :as stest]
-   [msa.grid :as grid]))
+   [msa.game.grid :as grid]
+   [msa.game.items :as items]))
 
 (declare add-feedback-to-player)
 (declare connect-rooms)
@@ -25,29 +26,9 @@
   (when verbosep
     (println s)))
 
-(defn random-color []
-  (float (/ (rand-int 1000) 1000)))
-
 ;; If this is ever an optimization issue, use subvec to avoid vec -> list -> vec
 (defn take-latest-5 [col]
   (into [] (take-last 5 col)))
-
-(defn colors []
-  {:r (random-color)
-   :g (random-color)
-   :b (random-color)})
-
-(defn i-red-scarf []
-  {:back {:png "32b-red-scarf" :color (colors)}
-   :default {:png "32-red-scarf-front" :color (colors)}})
-
-(defn i-tunic []
-  {:back {:png "32-tunic" :color (colors)}
-   :default {:png "32-tunic" :color (colors)}})
-
-(defn i-boots []
-  {:back {:png "32-boots" :color (colors)}
-   :default {:png "32-boots" :color (colors)}})
 
 (defn coord []
   (int (rand 10)))
@@ -75,7 +56,9 @@
            :x (coord)
            :y (coord)
            :dir "S"
-           :gear (random-items [(i-tunic) (i-red-scarf) (i-boots)])}]
+           :gear (random-items [(items/i-tunic)
+                                (items/i-red-scarf)
+                                (items/i-boots)])}]
     (conj p (get-valid-spawn-coords p))))
 
 ;; (def stub

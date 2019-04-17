@@ -1,4 +1,4 @@
-(ns msa.grid
+(ns msa.game.grid
   (:require
    [clojure.repl :refer :all]
    [clojure.spec.alpha :as s]
