@@ -5,7 +5,8 @@
    [clojure.spec.gen.alpha :as gen]
    [clojure.spec.test.alpha :as stest]
    [msa.game.grid :as grid]
-   [msa.game.items :as items]))
+   [msa.game.items :as items]
+   [msa.game.unit :as unit]))
 
 (declare add-feedback-to-player)
 (declare connect-rooms)
@@ -58,8 +59,9 @@
            :dir "S"
            :gear (random-items [(items/i-tunic)
                                 (items/i-red-scarf)
-                                (items/i-boots)])}]
-    (conj p (get-valid-spawn-coords p))))
+                                (items/i-boots)])}
+        make-map (conj p (get-valid-spawn-coords p))]
+    (unit/make make-map)))
 
 ;; (def stub
 ;;   (atom {:name "You" :x 0 :y 0 :gear [i-red-scarf]}))
@@ -238,8 +240,8 @@
 (defn player? [unit]
   (not (mob? unit)))
 
-(defn living? [{:keys [hp]}]
-  (> hp 0))
+(defn living? [m]
+  (unit/alive? m))
 
 (defn handle-move [{:keys [dir name]}]
   (let [player (find-by-name name)
