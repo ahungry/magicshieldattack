@@ -41,10 +41,11 @@
   (> hp 0))
 
 (s/fdef alive?
-  :args (s/cat :m ::unit-model)
+  ;; :args (s/cat :m ::unit-model)
+  :args (s/cat :m (s/keys :req-un [::hp]))
   :ret boolean?)
-;; (stest/instrument `alive?)
-;; (stest/check `alive?)
+;; (stest/instrument `alive?) ; Use without an arg to enable all instrumentation (arg checks)
+;; (stest/check `alive?) ; Run generative tests to assert return types.
 
 (defn dead? [m]
   (not (alive? m)))

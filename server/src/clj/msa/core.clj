@@ -15,6 +15,7 @@
             [mount.core :as mount])
   (:gen-class))
 
+;; TODO: Maybe remove this unless in dev mode only?
 (stest/instrument)
 
 (def cli-options
