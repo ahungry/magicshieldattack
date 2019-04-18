@@ -27,10 +27,6 @@
   (when verbosep
     (println s)))
 
-;; If this is ever an optimization issue, use subvec to avoid vec -> list -> vec
-(defn take-latest-5 [col]
-  (into [] (take-last 5 col)))
-
 (defn coord []
   (int (rand 10)))
 
@@ -166,100 +162,23 @@
 (defn update-unit! [name unit]
   (swap! world conj {(keyword name) unit}))
 
-(defn move-east [m]
-  (conj m {:dir "E" :x (inc (:x m))}))
-
-(defn move-west [m]
-  (conj m {:dir "W" :x (dec (:x m))}))
-
-(defn move-north [m]
-  (conj m {:dir "N" :y (dec (:y m))}))
-
-(defn move-south [m]
-  (conj m {:dir "S" :y (inc (:y m))}))
-
-(defn attack-east [m]
-  (conj m {:dir "E" :x (inc (:x m))}))
-
-(defn attack-west [m]
-  (conj m {:dir "W" :x (dec (:x m))}))
-
-(defn attack-north [m]
-  (conj m {:dir "N" :y (dec (:y m))}))
-
-(defn attack-south [m]
-  (conj m {:dir "S" :y (inc (:y m))}))
-
-(defn dir-to-move-fn [dir]
-  (case dir
-    "E" move-east
-    "W" move-west
-    "N" move-north
-    "S" move-south
-    nil))
-
-(defn dir-to-attack-fn [dir]
-  (case dir
-    "E" attack-east
-    "W" attack-west
-    "N" attack-north
-    "S" attack-south
-    nil))
-
-(defn move-player
-  "Move a unit in the specified direction.
-  Expects p to have :x and :y keys."
-  [dir p]
-  (let [mp ((dir-to-move-fn dir) p)]
-    (conj
-     mp
-     {:feedback
-      (take-latest-5
-       (conj (:feedback mp)
-             (format "You move to %s , %s." (:x mp) (:y mp))))})))
-
-(defn attack-player
-  "Attack a unit in the specified direction.
-  Expects p to have :x and :y keys."
-  [dir p]
-  (let [mp ((dir-to-attack-fn dir) p)]
-    (conj
-     mp
-     {:feedback
-      (take-latest-5
-       (conj (:feedback mp)
-             (format "You attack %s , %s, hitting no one." (:x mp) (:y mp))))})))
-
-(defn chat-player [chat p]
-  (conj p {:chat chat}))
-
-;; Our useful predicates or various states of things here.
-(defn mob? [unit]
-  (:mob unit))
-
-(defn player? [unit]
-  (not (mob? unit)))
-
-(defn living? [m]
-  (unit/alive? m))
-
 (defn handle-move [{:keys [dir name]}]
   (let [player (find-by-name name)
         _others (all-but-name name)]
     (when player
       (cond
-        (not (living? player))
+        (not (unit/alive? player))
         (add-feedback-to-player name "Cannot move, you are dead.")
 
-        (not (empty-coords? (move-player dir player)))
+        (not (empty-coords? (unit/move dir player)))
         (add-feedback-to-player name "Cannot move there, occupied.")
 
-        (not (valid-coords? (move-player dir player)))
+        (not (valid-coords? (unit/move dir player)))
         (add-feedback-to-player name "Cannot move there, something blocks you.")
 
         :else
         (do
-          (update-unit! name (move-player dir player))
+          (update-unit! name (unit/move dir player))
           (update-stance! name "move"))))))
 
 (defn update-dir! [name dir]
@@ -293,7 +212,7 @@
 
 (defn add-feedback-to-player [n f]
   (let [p (find-by-name n)]
-    (update-unit! n (conj p {:feedback (take-latest-5 (conj (:feedback p) f))}))))
+    (update-unit! n (conj p {:feedback (unit/take-latest-5 (conj (:feedback p) f))}))))
 
 (defn msa-attack-scale
   "When two units are comparing stances, see which wins."
@@ -355,7 +274,7 @@
         _others (all-but-name name)]
     (when player
       (cond
-        (not (living? player))
+        (not (unit/alive? player))
         (add-feedback-to-player name "Cannot attack, you are dead.")
 
         :else
@@ -366,14 +285,14 @@
           ;; At this point, we know attack-player is the map of where he is attacking.
           ;; So, we don't actually update his position, we just use the new x/y coordinates.
           ;; (swap! world coordinates-attacked (attack-player dir player))
-          (coordinates-attacked @world (attack-player dir player))))
+          (coordinates-attacked @world (unit/attack dir player))))
       )))
 
 (defn handle-chat [{:keys [chat name]}]
   (let [player (find-by-name name)
         _others (all-but-name name)]
     (when player
-      (update-unit! name (chat-player chat player)))))
+      (update-unit! name (unit/chat player chat)))))
 
 (defn process-input
   "Dispatch based on the input action."
@@ -405,10 +324,10 @@
   (filter #(:mob %) (get-world)))
 
 (defn get-all-players []
-  (filter player? (get-world)))
+  (filter unit/player? (get-world)))
 
 (defn get-all-living-players []
-  (filter living? (get-all-players)))
+  (filter unit/alive? (get-all-players)))
 
 (defn point-to-point-distance [a b]
   (+ (Math/abs (- (:x a) (:x b)))

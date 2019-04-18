@@ -51,7 +51,8 @@
    :test          [:project/dev :project/test :profiles/test]
 
    :project/dev  {:jvm-opts ["-Dconf=dev-config.edn"]
-                  :dependencies [[expound "0.7.1"]
+                  :dependencies [[expound "0.7.2"]
+                                 [org.clojure/test.check "0.9.0"] ; needed to make stest/check work.
                                  [pjstadig/humane-test-output "0.9.0"]
                                  [prone "1.6.1"]
                                  [ring/ring-devel "1.7.1"]

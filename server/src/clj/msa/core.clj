@@ -6,8 +6,16 @@
             [msa.config :refer [env]]
             [clojure.tools.cli :refer [parse-opts]]
             [clojure.tools.logging :as log]
+
+            ;; Spec stuff
+            [clojure.spec.alpha :as s]
+            [clojure.spec.gen.alpha :as gen]
+            [clojure.spec.test.alpha :as stest]
+
             [mount.core :as mount])
   (:gen-class))
+
+(stest/instrument)
 
 (def cli-options
   [["-p" "--port PORT" "Port number"
