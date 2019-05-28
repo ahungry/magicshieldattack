@@ -12,7 +12,8 @@
 (defn my-rand-int [n]
   (int (* (+ 1 n) (rand 1))))
 
-(defn one [n] 1)
+(defn one [n]
+  (if (> n 0) n 1))
 
 (defn map-into
   "Eagerly maps into a vector the user fn to the col."
@@ -100,8 +101,18 @@
              times
              (+ 1 acc))))
 
+(defn set-stairs
+  "Find a stair location, connect the entry path to it."
+  [m]
+  (let [x (rand-tile)
+        y (rand-tile)]
+    (-> m
+        (assoc-in [x y] 2)
+        (connect-rooms 0 0 x y))))
+
 (defn generate-world-map []
   (-> (world-map-grid)
-      (update-in [0 0] inc)             ; Ensure 0,0 is always a valid walk path
+      (update-in [0 0] inc)   ; Ensure 0,0 is always a valid walk path
       (generate-world-map-halls 3 0)
-      (generate-world-map-rooms 5 0)))
+      (generate-world-map-rooms 5 0)
+      (set-stairs)))

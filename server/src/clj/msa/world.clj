@@ -74,7 +74,9 @@
   (let [map-idx (keyword (str n))]
     (swap! world-map conj {map-idx (grid/generate-world-map)})))
 
-(defn get-world-map [n]
+(defn get-world-map
+  "Get a world map, as indexed by N."
+  [n]
   (let [map-idx (keyword (str n))]
     (when (not (map-idx @world-map))
       (set-world-map n))
