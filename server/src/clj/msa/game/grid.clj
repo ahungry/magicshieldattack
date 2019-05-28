@@ -7,6 +7,8 @@
 
 (declare connect-rooms)
 
+;; This has to match up with the client view / tile.
+(def STAIRS 3)
 (def map-size 30)
 
 (defn my-rand-int [n]
@@ -107,7 +109,7 @@
   (let [x (rand-tile)
         y (rand-tile)]
     (-> m
-        (assoc-in [x y] 2)
+        (assoc-in [x y] STAIRS)
         (connect-rooms 0 0 x y))))
 
 (defn generate-world-map []

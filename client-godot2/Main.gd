@@ -132,6 +132,7 @@ func _ack_login(json):
 	#printt("Received a login event.", json)
 	pass
 
+# Draw the world map based on the grid we receive.
 func _ack_world_map(json):
 	for x in range(0, json.size()):
 		var xs = json[x]
