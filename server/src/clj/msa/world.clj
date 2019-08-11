@@ -454,6 +454,20 @@
   [a b]
   (if (and (:mob a) (not (:mob b))) false true))
 
+;; every-pred (and) / some-fn (or)
+(def living-and-player? (every-pred unit/alive? unit/player?))
+
+(defn get-dad []
+  (-> (filter #(= (:name %) "dad") (get-world)) first))
+
+(defn process-zone-changes [col]
+  (let [zone-candidates
+        (->> col
+             (filter living-and-player?)
+             (filter on-stairs?)
+             )]
+    (doall (map #(update-unit! (:name %) (unit/goto-origin %)) zone-candidates))))
+
 (defn process-queue
   "Go through all the pending events for action requests, AI movements,
   and persisting the game state to disk."
@@ -465,6 +479,7 @@
     (clear-all-events (get-world))
     (clear-all-was-hits (get-world))
     (regen-some-health (get-world))
+    (process-zone-changes (get-world))
     ;; Give the mobs a chance to do something.
     ;; TODO: May want to plop them in queue with everyone else if we end up sorting
     ;; actions based on speed or something.  We should also always let players resolve

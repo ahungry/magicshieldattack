@@ -102,7 +102,7 @@
     nil))
 
 (defn move
-  "Move a unit in the specified direction.
+  "Move a unit P in the specified direction DIR.
   Expects p to have :x and :y keys."
   [dir p]
   (let [mp ((dir-to-move-fn dir) p)]
@@ -124,3 +124,8 @@
       (take-latest-5
        (conj (:feedback mp)
              (format "You attack %s , %s, hitting no one." (:x mp) (:y mp))))})))
+
+(defn goto-origin
+  "Return to the origin point."
+  [m]
+  (conj m {:x 0 :y 0}))

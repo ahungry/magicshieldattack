@@ -19,11 +19,11 @@
   {:body (w/handle-input i)})
 
 (defn json-world-map [{:keys [zone]}]
-  (let [zone-n (Integer/parseInt (or zone 0))]
+  (let [zone-n (Integer/parseInt (or zone "0"))]
     {:body (w/get-world-map zone-n)}))
 
 (defn json-world-map-wrapped [{:keys [zone]}]
-  (let [zone-n (Integer/parseInt (or zone 0))]
+  (let [zone-n (Integer/parseInt (or zone "0"))]
     {:body {:map (w/get-world-map zone-n)}}))
 
 (defn json-world [params]
