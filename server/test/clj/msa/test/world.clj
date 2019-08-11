@@ -4,9 +4,12 @@
             [msa.world :as w]))
 
 ;; Set up a stub for the test here.
-(swap! w/world-map conj {(keyword (str -1)) [[0 0] [0 3]]})
 
-(w/process-zone-changes identity [{:x 1 :y 1 :zone -1 :hp 1}])
+(use-fixtures
+  :once
+  (fn [f]
+    (swap! w/world-map conj {(keyword (str -1)) [[0 0] [0 3]]})
+    (f)))
 
 (deftest test-on-stairs?
   (testing "If I find match on stairs"
