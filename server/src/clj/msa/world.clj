@@ -130,6 +130,11 @@
 ;;    (player "Test2")
 ;;    (player "Test3")])
 
+(defn on-stairs?
+  "See if the unit is standing on the stairs or not, given the unit's active zone and x/y coords."
+  [{:keys [zone] :as unit}]
+  (= :stairs (grid/get-unit-on-type? (get-world-map zone) unit)))
+
 (defn col-all-but-name [s col]
   (->> col
        (filter #(not (= (:name %) s)))

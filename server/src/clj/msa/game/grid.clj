@@ -1,3 +1,8 @@
+;; Main logic and handling for the grid/world system.
+;; 0 - Unwalkable wall area
+;; 1 - Walkable path of one terrain type
+;; 3 - A stair element (something the player can step on to trigger loading to a different zone
+
 (ns msa.game.grid
   (:require
    [clojure.repl :refer :all]
@@ -118,3 +123,12 @@
       (generate-world-map-halls 3 0)
       (generate-world-map-rooms 5 0)
       (set-stairs)))
+
+(defn get-unit-on-type?
+  "Check what type of tile a unit is on for some special types (like stairs)."
+  [grid {:keys [x y] :as _unit}]
+  (case (get-in grid [x y])
+    3 :stairs
+    1 :floor
+    0 :wall
+    :unknown))

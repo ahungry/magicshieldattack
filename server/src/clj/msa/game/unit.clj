@@ -23,6 +23,7 @@
         (map->UnitModel
          (conj
           {
+           :zone 0
            :name name
            :chat "..."
            :animation_event {}
