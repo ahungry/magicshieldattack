@@ -129,3 +129,9 @@
   "Return to the origin point."
   [m]
   (conj m {:x 0 :y 0}))
+
+(defn goto-origin-next-zone
+  "Go to the origin point of the next zone."
+  [m]
+  (-> (conj m {:x 0 :y 0})
+      (update-in [:zone] inc)))

@@ -460,13 +460,13 @@
 (defn get-dad []
   (-> (filter #(= (:name %) "dad") (get-world)) first))
 
-(defn process-zone-changes [col]
+(defn process-zone-changes [f col]
   (let [zone-candidates
         (->> col
              (filter living-and-player?)
              (filter on-stairs?)
              )]
-    (doall (map #(update-unit! (:name %) (unit/goto-origin %)) zone-candidates))))
+    (doall (map #(f (:name %) (unit/goto-origin-next-zone %)) zone-candidates))))
 
 (defn process-queue
   "Go through all the pending events for action requests, AI movements,
@@ -479,7 +479,7 @@
     (clear-all-events (get-world))
     (clear-all-was-hits (get-world))
     (regen-some-health (get-world))
-    (process-zone-changes (get-world))
+    (process-zone-changes update-unit! (get-world))
     ;; Give the mobs a chance to do something.
     ;; TODO: May want to plop them in queue with everyone else if we end up sorting
     ;; actions based on speed or something.  We should also always let players resolve
