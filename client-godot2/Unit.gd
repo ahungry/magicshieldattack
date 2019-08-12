@@ -29,6 +29,7 @@ var dest_x = 0
 var dest_y = 0
 var hp = 50
 var hpm = 50
+var zone = 0
 
 var flip_h = false
 var anim = 'knight'

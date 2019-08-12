@@ -24,6 +24,7 @@ Color(0.6, 0.6, 1),
 Color(1, 1, 1)
 ]
 var action = 0
+var zone = 0
 
 const N = 0x1
 const E = 0x2
@@ -116,11 +117,15 @@ func set_feedback(feedback):
 	for i in range(f, s):
 		get_node('HUD/Feedback').text += feedback[i] + '\n'
 
+# Get the current zone the player unit is in.
 func fetch_world_map():
-	sdk.world_map()
+	if (player_unit):
+		zone = player_unit.zone
+	sdk.world_map(zone)
 
 func fetch_world():
 	sdk.world()
+	fetch_world_map()
 
 func _hud_submit(chat):
 	sdk.chat(chat)
@@ -175,6 +180,7 @@ func _ack_world(raw_json):
 				existing = u
 
 		if TYPE_OBJECT == typeof(existing):
+			existing.zone = jr.zone
 			existing.hp = jr.hp
 			existing.hpm = jr.hpm
 			existing.chat = jr.chat

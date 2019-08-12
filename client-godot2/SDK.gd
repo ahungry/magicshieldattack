@@ -140,8 +140,8 @@ func attack(dir):
 func world():
 	_get("cb_world", "/world.json?step=" + str(step + 1))
 
-func world_map():
-	_get("cb_world_map", "/world-map-wrapped.json")
+func world_map(zone):
+	_get("cb_world_map", "/world-map-wrapped.json?zone=" + str(zone))
 
 func _process_move_queue():
 	if move_queue.size() == 0: return
