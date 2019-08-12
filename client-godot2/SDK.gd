@@ -138,7 +138,7 @@ func attack(dir):
 	username, "stance": stance})
 
 func world():
-	_get("cb_world", "/world.json?step=" + str(step + 1))
+	_get("cb_world", "/world.json?step=" + str(step + 1) + '&username=' + str(username))
 
 func world_map(zone):
 	_get("cb_world_map", "/world-map-wrapped.json?zone=" + str(zone))

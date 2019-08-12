@@ -138,17 +138,20 @@ func _ack_login(json):
 	#printt("Received a login event.", json)
 	pass
 
+func reset_board(zone):
+	zone_last = zone
+	units = [player_unit]
+	# wipe out the board to redraw it
+	for x in range(0, 100):
+		for y in range(0, 100):
+			Map.set_cell(x, y, -1)
+			get_node('TileMap2').set_cell(x, y, -1)
+
+
 # Draw the world map based on the grid we receive.
 func _ack_world_map(json):
 	if zone != zone_last:
-		zone_last = zone
-		# wipe out the board to redraw it
-		for x in range(0, json.size()):
-			var xs = json[x]
-			for y in range(0, xs.size()):
-				var ys = xs[y]
-				Map.set_cell(x, y, -1)
-				get_node('TileMap2').set_cell(x, y, -1)
+		reset_board(zone)
 
 	for x in range(0, json.size()):
 		var xs = json[x]

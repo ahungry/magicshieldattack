@@ -13,6 +13,7 @@
 (declare valid-coords?)
 (declare update-stance!)
 (declare mob-ai-stance)
+(declare find-by-name)
 
 (def verbosep nil)
 (def save-file-path "/tmp/msa.edn")
@@ -115,14 +116,18 @@
 (defn get-world []
   (map-to-vec @world))
 
-(defn get-world-step [{:keys [step]}]
-  (let [min-step (Integer/parseInt (or step 0))]
+(defn get-world-for-username [username]
+  (let [zone (:zone (find-by-name username))]
+    (filter #(= zone (:zone %)) (get-world))))
+
+(defn get-world-step [{:keys [step username]}]
+  (let [min-step (Integer/parseInt (or step "0"))]
     ;; User requests their min step (next update cycle).
     ;; If we haven't hit it yet, pause here until we do, so they get
     ;; the freshest response as soon as the world-step is updated.
     (while (> min-step @world-step) (do (Thread/sleep 50)))
     {:step @world-step
-     :world (get-world)}))
+     :world (get-world-for-username username)}))
 
 ;; (defn get-world []
 ;;   [@stub
@@ -148,17 +153,20 @@
 (defn all-but-name [s]
   (col-all-but-name s (get-world)))
 
-(defn find-by-coords [{:keys [x y]}]
+(defn find-by-coords
+  "Find anything that is on the coordinates that match.
+  Since we can't move to a spot we already occupy, we just check for matches."
+  [{:keys [x y name]}]
   (filter #(and (= x (:x %))
-                      (= y (:y %))) (get-world)))
+                (= y (:y %))) (get-world-for-username name)))
 
 (defn empty-coords? [m]
   (not (> (count (find-by-coords m)) 0)))
 
 (defn valid-coords?
   "A value of 0 indicates an obstacle the player cannot walk on."
-  [{:keys [x y]}]
-  (> (get-in (get-world-map 0) [x y]) 0))
+  [{:keys [x y zone]}]
+  (> (get-in (get-world-map zone) [x y]) 0))
 
 (defn find-by-name [s]
   ((keyword s) @world))
@@ -166,8 +174,14 @@
 (defn small-world []
   (map #(select-keys % [:name :x :y :hp :stance]) (get-world)))
 
-(defn update-unit! [name unit]
+(defn update-unit!
+  "Set the unit NAME to the values UNIT map."
+  [name unit]
   (swap! world conj {(keyword name) unit}))
+
+(defn set-zone-by-name [zone name]
+  (let [player (find-by-name name)]
+    (update-unit! name (conj player {:zone zone}))))
 
 (defn handle-move [{:keys [dir name]}]
   (let [player (find-by-name name)
