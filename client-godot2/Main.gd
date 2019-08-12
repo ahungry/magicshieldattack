@@ -25,6 +25,7 @@ Color(1, 1, 1)
 ]
 var action = 0
 var zone = 0
+var zone_last = 0
 
 const N = 0x1
 const E = 0x2
@@ -139,6 +140,16 @@ func _ack_login(json):
 
 # Draw the world map based on the grid we receive.
 func _ack_world_map(json):
+	if zone != zone_last:
+		zone_last = zone
+		# wipe out the board to redraw it
+		for x in range(0, json.size()):
+			var xs = json[x]
+			for y in range(0, xs.size()):
+				var ys = xs[y]
+				Map.set_cell(x, y, -1)
+				get_node('TileMap2').set_cell(x, y, -1)
+
 	for x in range(0, json.size()):
 		var xs = json[x]
 		for y in range(0, xs.size()):
