@@ -11,7 +11,7 @@
 
 (defrecord UnitModel
     [name chat animation_event was_hit feedback stance
-     stance_preferred xp hp hpm atk def x y dir gear])
+     stance_preferred xp hp hpm atk def x y dir gear zone])
 
 (s/def ::non-empty-string (s/and string? #(> (count %) 0)))
 (s/def ::name ::non-empty-string)

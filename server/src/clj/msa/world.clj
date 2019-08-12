@@ -59,6 +59,7 @@
            :x (coord)
            :y (coord)
            :dir "S"
+           :zone 0
            :gear (random-items [(items/i-tunic)
                                 (items/i-red-scarf)
                                 (items/i-boots)])}
@@ -185,7 +186,7 @@
   ((keyword s) @world))
 
 (defn small-world []
-  (map #(select-keys % [:name :x :y :hp :stance]) (get-world)))
+  (map #(select-keys % [:name :x :y :hp :stance :zone]) (get-world)))
 
 (defn update-unit!
   "Set the unit NAME to the values UNIT map."
@@ -499,8 +500,8 @@
   "Go through all the pending events for action requests, AI movements,
   and persisting the game state to disk."
   []
-  (when (> 3 (count (get-all-mobs)))
-    (spawn-mob))
+  ;; (when (> 3 (count (get-all-mobs)))
+  ;;   (spawn-mob))
   (when @queue-runner-mutex
     ;; Wipe out all of last round's animation_event
     (clear-all-events (get-world))

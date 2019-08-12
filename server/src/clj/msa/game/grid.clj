@@ -77,16 +77,16 @@
         (connect-rooms-x col sx sy dx dy)
         (connect-rooms-y col sx sy dx dy))))
 
-(defn rand-tile []
-  (my-rand-int (- map-size 1)))
+(defn rand-tile [n]
+  (my-rand-int (- n 1)))
 
 ;; https://stackoverflow.com/questions/12628286/simple-way-to-replace-nth-element-in-a-vector-in-clojure
 ;; (assoc [1 2 3] 1 5) => [1 5 3]
 ;; (update-in [1 2 3] [1] inc) => [1 3 3]
 ;; We can do this by planting some room seeds that we then connect.
 (defn generate-room [col]
-  (let [x (rand-tile)
-        y (rand-tile)
+  (let [x (rand-tile (count col))
+        y (rand-tile (count col))
         size (my-rand-int (int (/ map-size 4)))]
     (def icol (atom col))
     (doseq [ix (range x (+ x size))
@@ -98,7 +98,7 @@
 
 (defn generate-world-map-halls [grid times acc]
   (if (> acc times) grid
-      (recur (connect-rooms grid 0 0 (rand-tile) (rand-tile))
+      (recur (connect-rooms grid 0 0 (rand-tile (count grid)) (rand-tile (count grid)))
              times
              (+ 1 acc))))
 
@@ -111,8 +111,8 @@
 (defn set-stairs
   "Find a stair location, connect the entry path to it."
   [m]
-  (let [x (rand-tile)
-        y (rand-tile)]
+  (let [x (rand-tile (count m))
+        y (rand-tile (count m))]
     (-> m
         (assoc-in [x y] STAIRS)
         (connect-rooms 0 0 x y))))
