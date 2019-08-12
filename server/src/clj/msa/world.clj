@@ -187,6 +187,15 @@
 (defn find-by-name [s]
   ((keyword s) @world))
 
+(defn remove-by-key
+  "Remove from a map based on key."
+  [m kw]
+  (->> (remove (fn [[k _v]] (= k kw)) m)
+       (into {})))
+
+(defn remove-by-name [s]
+  (remove-by-key @world (keyword s)))
+
 (defn small-world []
   (map #(select-keys % [:name :x :y :hp :stance :zone]) (get-world)))
 

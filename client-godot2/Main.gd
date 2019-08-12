@@ -213,21 +213,25 @@ func _ack_world(raw_json):
 				set_feedback(jr.feedback)
 				#animation_event(jr)
 			else:
-				# Do not override what the player wants their stance to be.
-				existing.set_stance(jr.stance)
+				if jr.zone == zone:
+					# Do not override what the player wants their stance to be.
+					existing.set_stance(jr.stance)
+				else:
+					get_node('TileMap2').remove_child(existing)
 
 		else:
 			#printt('Found name: ' + jr.name)
-			var m = Unit.instance()
-			m.chat = jr.chat
-			m.hp = jr.hp
-			m.hpm = jr.hpm
-			m.boot(jr.name, jr.gear)
-			m.map = Map
-			m.tween_to(jr.x, jr.y, jr.dir, Map)
-			m.set_stance(jr.stance)
-			units.push_back(m)
-			get_node('TileMap2').add_child(m)
+			if jr.zone == zone or jr.name == player_name:
+				var m = Unit.instance()
+				m.chat = jr.chat
+				m.hp = jr.hp
+				m.hpm = jr.hpm
+				m.boot(jr.name, jr.gear)
+				m.map = Map
+				m.tween_to(jr.x, jr.y, jr.dir, Map)
+				m.set_stance(jr.stance)
+				units.push_back(m)
+				get_node('TileMap2').add_child(m)
 		# else
 	# for
 	var mt = Timer.new()
