@@ -29,16 +29,21 @@
     (println s)))
 
 (defn coord []
-  (int (rand 10)))
+  (int (rand 5)))
 
 (defn get-valid-spawn-coords [p]
-  (if (valid-coords? p) p
-      (get-valid-spawn-coords (conj p {:x (coord) :y (coord)}))))
+  (prn "Get valid spawn coords")
+  (if (valid-coords? p)
+    (do (prn "Satisified") p)
+    (do
+      (prn "Time to recurse I guess...")
+      (get-valid-spawn-coords (conj p {:x (coord) :y (coord)})))))
 
 (defn random-items [col]
   (->> col (take (+ 1 (int (rand 4)))) (into [])))
 
 (defn player [name]
+  (prn "Here so far...")
   (let [p {:name name
            :chat "..."
            :animation_event {}
@@ -58,7 +63,9 @@
                                 (items/i-red-scarf)
                                 (items/i-boots)])}
         make-map (conj p (get-valid-spawn-coords p))]
-    (unit/make make-map)))
+    make-map
+    ;; (unit/make make-map)
+    ))
 
 ;; (def stub
 ;;   (atom {:name "You" :x 0 :y 0 :gear [i-red-scarf]}))
@@ -73,7 +80,7 @@
 
 (defn set-world-map [n]
   (let [map-idx (keyword (str n))]
-    (swap! world-map conj {map-idx (grid/generate-world-map)})))
+    (swap! world-map conj {map-idx (grid/generate-world-map n)})))
 
 (defn get-world-map
   "Get a world map, as indexed by N."
@@ -164,9 +171,15 @@
   (not (> (count (find-by-coords m)) 0)))
 
 (defn valid-coords?
-  "A value of 0 indicates an obstacle the player cannot walk on."
+  "A value of 0 indicates an obstacle the player cannot walk on.
+  If the x/y is out of bounds (all maps are squares for now) the result is nil."
   [{:keys [x y zone]}]
-  (> (get-in (get-world-map zone) [x y]) 0))
+  (let [zone-idx (or zone 0)
+        zone-map (get-world-map zone-idx)
+        zmlen (- (count zone-map) 1)]
+    (if (or (> x zmlen) (> y zmlen))
+      nil
+      (> (get-in zone-map [x y]) 0))))
 
 (defn find-by-name [s]
   ((keyword s) @world))

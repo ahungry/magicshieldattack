@@ -14,7 +14,7 @@
 
 ;; This has to match up with the client view / tile.
 (def STAIRS 3)
-(def map-size 30)
+(def map-size 10)
 
 (defn my-rand-int [n]
   (int (* (+ 1 n) (rand 1))))
@@ -28,8 +28,8 @@
   (into [] (doall (map fn col))))
 
 ;; Wow, looks terrible!
-(defn world-map-grid []
-  (map-into (fn [x] (map-into (fn [y] 0) (range map-size))) (range map-size)))
+(defn world-map-grid [n]
+  (map-into (fn [x] (map-into (fn [y] 0) (range n))) (range n)))
 
 (defn stub-map []
   [
@@ -117,8 +117,8 @@
         (assoc-in [x y] STAIRS)
         (connect-rooms 0 0 x y))))
 
-(defn generate-world-map []
-  (-> (world-map-grid)
+(defn generate-world-map [n]
+  (-> (world-map-grid (+ map-size n))
       (update-in [0 0] inc)   ; Ensure 0,0 is always a valid walk path
       (generate-world-map-halls 3 0)
       (generate-world-map-rooms 5 0)
