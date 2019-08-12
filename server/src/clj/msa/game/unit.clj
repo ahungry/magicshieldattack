@@ -60,6 +60,9 @@
 (defn player? [m]
   (not (mob? m)))
 
+(defn in-zone? [n]
+  #(= (:zone %) n))
+
 ;; Actions
 (defn move-east [m]
   (conj m {:dir "E" :x (inc (:x m))}))

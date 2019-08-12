@@ -14,6 +14,7 @@
 (declare update-stance!)
 (declare mob-ai-stance)
 (declare find-by-name)
+(declare spawn-mob)
 
 (def verbosep nil)
 (def save-file-path "/tmp/msa.edn")
@@ -81,7 +82,8 @@
 
 (defn set-world-map [n]
   (let [map-idx (keyword (str n))]
-    (swap! world-map conj {map-idx (grid/generate-world-map n)})))
+    (swap! world-map conj {map-idx (grid/generate-world-map n)})
+    (doall (map (fn [_] (spawn-mob n)) (range n)))))
 
 (defn get-world-map
   "Get a world map, as indexed by N."
@@ -295,14 +297,12 @@
 ;; TODO: Probably update to use a get-all-on-coords and apply damage via names
 ;; and the name lookups (slightly slower, but more maintainable).
 (defn coordinates-attacked
-  "Player p applies an attack to all units in the world w that are on that coordinate."
+  "Player P applies an attack to all units in the world W that are on that coordinate."
   [w {:keys [x y] :as p}]
-  (doall (map (fn [[k v]]
-                {(keyword k)
-                 (if (and (= (:x v) x)
-                          (= (:y v) y))
-                   (apply-damage p v)
-                   v)}) w)))
+  (doall (map (fn [unit]
+                (when (and (= (:x unit) x)
+                           (= (:y unit) y)
+                           (apply-damage p unit)))) w)))
 
 (defn handle-attack [{:keys [dir name stance]}]
   (let [player (find-by-name name)
@@ -320,7 +320,7 @@
           ;; At this point, we know attack-player is the map of where he is attacking.
           ;; So, we don't actually update his position, we just use the new x/y coordinates.
           ;; (swap! world coordinates-attacked (attack-player dir player))
-          (coordinates-attacked @world (unit/attack dir player))))
+          (coordinates-attacked (get-world-for-username name) (unit/attack dir player))))
       )))
 
 (defn handle-chat [{:keys [chat name]}]
@@ -349,10 +349,12 @@
 (defn random-name [s]
   (format "%s-%s" s (rand-int 10000)))
 
-(defn spawn-mob []
+(defn spawn-mob
+  "Spawn a mob on the ZONE."
+  [zone]
   (let [name (random-name "Mob-")
         p (player name)
-        p2 (conj p {:mob true})]
+        p2 (conj p {:mob true :zone zone})]
     (update-unit! name p2)))
 
 (defn get-all-mobs []
@@ -363,6 +365,9 @@
 
 (defn get-all-living-players []
   (filter unit/alive? (get-all-players)))
+
+(defn get-all-living-players-in-zone [zone]
+  (filter (unit/in-zone? zone) (get-all-living-players)))
 
 (defn point-to-point-distance [a b]
   (+ (Math/abs (- (:x a) (:x b)))
@@ -406,8 +411,8 @@
 (defn mob-ai
   "Try to choose some sensible action to take.  Lets start by
   simply moving towards another player and trying to follow them."
-  [{:keys [x y] :as mob}]
-  (let [players (get-all-living-players)
+  [{:keys [x y zone] :as mob}]
+  (let [players (get-all-living-players-in-zone zone)
         comparator (partial ptp-comparator mob)
         closest (first (sort comparator players))]
     (when closest

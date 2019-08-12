@@ -13,3 +13,5 @@ Self explanatory
 Probably a better option would just be to add a sqlite layer for
 persisting the game, that way writes (such as a single bad one) can't
 end up botching the entire game state.
+* TODO When mob dies, despawn it next refresh
+* TODO Ensure that we stop showing mob on map when they aren't in our zone
