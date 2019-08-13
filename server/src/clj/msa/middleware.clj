@@ -10,7 +10,6 @@
             [muuntaja.middleware :refer [wrap-format wrap-params]]
             [msa.config :refer [env]]
             [ring.middleware.flash :refer [wrap-flash]]
-            [immutant.web.middleware :refer [wrap-session]]
             [ring.middleware.defaults :refer [api-defaults wrap-defaults]])
   (:import
            ))
@@ -62,7 +61,6 @@
       wrap-flash
       wrap-nocache
       wrap-cors
-      (wrap-session {:cookie-attrs {:http-only true}})
       (wrap-defaults
        (-> api-defaults
            ;; (assoc-in [:security :anti-forgery] false)

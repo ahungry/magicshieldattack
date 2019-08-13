@@ -127,7 +127,7 @@
   (map-to-vec @world))
 
 (defn get-world-for-username [username]
-  (let [zone (:zone (find-by-name username))]
+  (let [zone (or (:zone (find-by-name username)) 0)]
     (filter #(= zone (:zone %)) (get-world))))
 
 (defn get-world-step [{:keys [step username]}]
@@ -185,7 +185,7 @@
       (> (get-in zone-map [x y]) 0))))
 
 (defn find-by-name [s]
-  ((keyword s) @world))
+  (when s ((keyword s) @world)))
 
 (defn remove-by-key
   "Remove from a map based on key."
