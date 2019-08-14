@@ -1,5 +1,6 @@
 (ns msa.core
   (:require
+   [msa.util :as u]
    [msa.routes]
    [compojure.core :refer [defroutes GET POST DELETE ANY OPTIONS context] :as cc]
    [cheshire.core :as cheshire]
@@ -32,9 +33,30 @@
       (-> res
           (update-in [:body] cheshire/generate-string)))))
 
+(defn wrap-cors [handler]
+  (fn [req]
+    (let [res (handler req)]
+      (-> res
+          (assoc-in [:headers "Access-Control-Allow-Credentials"] "true")
+          (assoc-in [:headers "Access-Control-Allow-Methods"] "GET,HEAD,OPTIONS,POST,PUT,PATCH")
+          (assoc-in [:headers "Access-Control-Allow-Headers"] "Access-Control-Allow-Headers, Authorization, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers")
+          (assoc-in [:headers "Access-Control-Allow-Origin"] "*")))))
+
+(defn body->body-params [{:keys [body]}]
+  (when body
+    (-> body slurp cheshire/parse-string u/keys->keyword-keys)))
+
+(defn wrap-body-params [handler]
+  (fn [req]
+    (-> req
+        (assoc-in [:body-params] (body->body-params req))
+        handler)))
+
 (def app
   (cc/routes
    (-> msa.routes/all-routes
+       (cc/wrap-routes #'wrap-body-params)
+       (cc/wrap-routes #'wrap-cors)
        (cc/wrap-routes #'wrap-headers)
        (cc/wrap-routes #'wrap-json))))
 

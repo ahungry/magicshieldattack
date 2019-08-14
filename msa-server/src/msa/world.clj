@@ -16,7 +16,7 @@
 (declare find-by-name)
 (declare spawn-mob)
 
-(def verbosep nil)
+(def verbosep true)
 (def save-file-path "/tmp/msa.edn")
 
 (defn flip

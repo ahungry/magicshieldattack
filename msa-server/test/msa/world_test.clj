@@ -1,4 +1,4 @@
-(ns msa.world_test
+(ns msa.world-test
   (:require [clojure.test :refer :all]
             ;; [ring.mock.request :refer :all]
             [msa.world :as w]))

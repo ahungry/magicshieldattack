@@ -4,8 +4,9 @@
    [compojure.core :refer [defroutes GET POST DELETE ANY OPTIONS context]]
    [msa.world :as w]))
 
-(defn json-login [i]
-  {:body (w/handle-login i)})
+(defn json-login [req]
+  (let [name (-> req :body-params :name)]
+    {:body (w/handle-login {:name name})}))
 
 (defn json-input [i]
   {:body (w/handle-input i)})
@@ -37,10 +38,7 @@
        (w/logp "World was hit")
        (json-world params))
   (OPTIONS "/login.json" [] {:body []})
-  (POST "/login.json" req
-        (w/logp "Login was hit")
-        (w/logp req)
-        (json-login (:body-params req)))
+  (POST "/login.json" [] json-login)
   (OPTIONS "/input.json" [] {:body []})
   (POST "/input.json" req
         (w/logp "Input was hit")
