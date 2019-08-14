@@ -171,7 +171,7 @@
                 (= y (:y %))) (get-world-for-username name)))
 
 (defn empty-coords? [m]
-  (not (> (count (find-by-coords m)) 0)))
+  (not (> (count (->> (find-by-coords m) (filter unit/alive?))) 0)))
 
 (defn valid-coords?
   "A value of 0 indicates an obstacle the player cannot walk on.
