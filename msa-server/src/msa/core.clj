@@ -5,6 +5,7 @@
    [msa.routes]
    [compojure.core :refer [defroutes GET POST DELETE ANY OPTIONS context] :as cc]
    [cheshire.core :as cheshire]
+   [ring.middleware.params :as rmp]
    [org.httpkit.server :as server])
   (:gen-class))
 
@@ -53,10 +54,23 @@
         (assoc-in [:body-params] (body->body-params req))
         handler)))
 
+(defn kw-params [{:keys [query-params]}]
+  (when query-params
+    (-> query-params u/keys->keyword-keys)))
+
+(defn wrap-query-params-as-kws [handler]
+  (fn [req]
+    (-> req
+        (assoc-in [:query-params] (kw-params req))
+        handler)))
+
+;; I thought this ran top down / threaded, but somehow rmp has to come after my own...?
 (def app
   (cc/routes
    (-> msa.routes/all-routes
+       (cc/wrap-routes #'wrap-query-params-as-kws)
        (cc/wrap-routes #'wrap-body-params)
+       (cc/wrap-routes #'rmp/wrap-params)
        (cc/wrap-routes #'wrap-cors)
        (cc/wrap-routes #'wrap-headers)
        (cc/wrap-routes #'wrap-json))))

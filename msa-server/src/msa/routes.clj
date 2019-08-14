@@ -19,24 +19,24 @@
   (let [zone-n (Integer/parseInt (or zone "0"))]
     {:body {:map (w/get-world-map zone-n)}}))
 
-(defn json-world [params]
-  {:body (w/get-world-step params)})
+(defn json-world [m]
+  {:body (w/get-world-step m)})
 
 (defn version [req] {:body "0.0.1"})
 
 (defroutes all-routes
   (GET "/version" [] version)
   (OPTIONS "/world-map.json" [] {:body []})
-  (GET "/world-map.json" {params :params}
+  (GET "/world-map.json" {query-params :query-params}
        (w/logp "World map was hit")
-       (json-world-map params))
-  (GET "/world-map-wrapped.json" {params :params}
+       (json-world-map query-params))
+  (GET "/world-map-wrapped.json" {query-params :query-params}
        ;; (w/logp "World map wrapped was hit")
-       (json-world-map-wrapped params))
+       (json-world-map-wrapped query-params))
   (OPTIONS "/world.json" [] {:body []})
-  (GET "/world.json" {params :params}
+  (GET "/world.json" {query-params :query-params}
        ;; (w/logp "World was hit")
-       (json-world params))
+       (json-world query-params))
   (OPTIONS "/login.json" [] {:body []})
   (POST "/login.json" [] json-login)
   (OPTIONS "/input.json" [] {:body []})

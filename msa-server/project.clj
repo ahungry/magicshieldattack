@@ -8,6 +8,7 @@
                  [compojure "1.6.1"]
                  [cheshire "5.9.0"]
                  [http-kit "2.3.0"]
+                 [ring "1.7.1"]
                  ]
   :main ^:skip-aot msa.core
   :target-path "target/%s"
