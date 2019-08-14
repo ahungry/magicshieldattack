@@ -30,14 +30,13 @@
     (println s)))
 
 (defn coord []
-  (int (rand 5)))
+  (int (rand 20)))
 
 (defn get-valid-spawn-coords [p]
   (prn "Get valid spawn coords")
   (if (valid-coords? p)
     (do (prn "Satisified") p)
     (do
-      (prn "Time to recurse I guess...")
       (get-valid-spawn-coords (conj p {:x (coord) :y (coord)})))))
 
 (defn random-items [col]
@@ -82,7 +81,7 @@
 
 (defn set-world-map [n]
   (let [map-idx (keyword (str n))]
-    (swap! world-map conj {map-idx (grid/generate-world-map n)})
+    (swap! world-map conj {map-idx (grid/generate-world-map (* 10 n))})
     (doall (map (fn [_] (spawn-mob n)) (range n)))))
 
 (defn get-world-map
@@ -113,11 +112,11 @@
     (reset! world (:world disk-data))))
 
 (defn world-reset []
-  (reset! world
-          {
-           :Test {:x 3 :y 4}
-           :Ttwo {:x 8 :y 8}
-           }
+  (reset! world {}
+          ;; {
+          ;;  :Test {:x 3 :y 4}
+          ;;  :Ttwo {:x 8 :y 8}
+          ;;  }
           ;; {:Test (player "Test")
           ;;  :Test2 (player "Test2")
           ;;  :Test3 (player "Test3")}
@@ -540,7 +539,8 @@
             (logp (format "P: %s X: %s Y: %s" name x y))) (get-world)))
     (reset! queue nil))
   (swap! world-step inc)
-  (world-to-disk)
+  ;; TODO: Re-enable me when things are smoothed out.
+  ;; (world-to-disk)
   (Thread/sleep 1500))
 
 (defn world-boot []

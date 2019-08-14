@@ -140,6 +140,10 @@ func _ack_login(json):
 
 func reset_board(zone):
 	zone_last = zone
+	# See if we should clear off any old unit nodes
+	for u in units:
+		if u.zone != zone:
+			get_node('TileMap2').remove_child(u)
 	units = [player_unit]
 	# wipe out the board to redraw it
 	for x in range(0, 100):
