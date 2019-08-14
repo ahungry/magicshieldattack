@@ -542,7 +542,8 @@
 
 (defn world-boot []
   (get-world-map 0)
-  (spawn-mob))
+  ;; (spawn-mob)
+  )
 
 (defn maybe-world-resume []
   (if (.exists (clojure.java.io/file save-file-path))

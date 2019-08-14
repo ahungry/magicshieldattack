@@ -64,5 +64,6 @@
                                (pjstadig.humane-test-output/activate!)]}
    :project/test {:jvm-opts ["-Dconf=test-config.edn"]
                   :resource-paths ["env/test/resources"]}
-   :profiles/dev {}
+   ;; Not sure this will do anything useful actually...
+   :profiles/dev {:injections [(use 'clojure.repl)] }
    :profiles/test {}})
