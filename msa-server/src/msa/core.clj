@@ -1,5 +1,6 @@
 (ns msa.core
   (:require
+   [msa.world :as w]
    [msa.util :as u]
    [msa.routes]
    [compojure.core :refer [defroutes GET POST DELETE ANY OPTIONS context] :as cc]
@@ -69,11 +70,14 @@
     (@server :timeout 100)
     (reset! server nil)))
 
-(defn start []
+(defn start [& _]
   ;; The #' is useful when you want to hot-reload code
   ;; You may want to take a look: https://github.com/clojure/tools.namespace
   ;; and http://http-kit.org/migration.html#reload
+  (w/queue-runner)
   (reset! server (server/run-server #'app {:port 3000})))
+
+(def restart (comp start stop))
 
 (defn -main [& args]
   (prn "Begin")
