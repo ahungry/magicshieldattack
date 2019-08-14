@@ -221,7 +221,7 @@ func _ack_world(raw_json):
 
 		else:
 			#printt('Found name: ' + jr.name)
-			if jr.zone == zone or jr.name == player_name:
+			if (jr.zone == zone or jr.name == player_name) and TYPE_NIL != typeof(jr.name):
 				var m = Unit.instance()
 				m.chat = jr.chat
 				m.hp = jr.hp

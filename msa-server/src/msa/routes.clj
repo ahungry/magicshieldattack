@@ -31,16 +31,16 @@
        (w/logp "World map was hit")
        (json-world-map params))
   (GET "/world-map-wrapped.json" {params :params}
-       (w/logp "World map wrapped was hit")
+       ;; (w/logp "World map wrapped was hit")
        (json-world-map-wrapped params))
   (OPTIONS "/world.json" [] {:body []})
   (GET "/world.json" {params :params}
-       (w/logp "World was hit")
+       ;; (w/logp "World was hit")
        (json-world params))
   (OPTIONS "/login.json" [] {:body []})
   (POST "/login.json" [] json-login)
   (OPTIONS "/input.json" [] {:body []})
   (POST "/input.json" req
-        (w/logp "Input was hit")
-        (w/logp (:body-params req))
+        ;; (w/logp "Input was hit")
+        ;; (w/logp (:body-params req))
         (json-input (:body-params req))))

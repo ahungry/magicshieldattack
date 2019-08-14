@@ -16,7 +16,7 @@
 (declare find-by-name)
 (declare spawn-mob)
 
-(def verbosep true)
+(def verbosep nil)
 (def save-file-path "/tmp/msa.edn")
 
 (defn flip
@@ -177,12 +177,15 @@
   "A value of 0 indicates an obstacle the player cannot walk on.
   If the x/y is out of bounds (all maps are squares for now) the result is nil."
   [{:keys [x y zone]}]
-  (let [zone-idx (or zone 0)
-        zone-map (get-world-map zone-idx)
-        zmlen (- (count zone-map) 1)]
-    (if (or (> x zmlen) (> y zmlen))
-      nil
-      (> (get-in zone-map [x y]) 0))))
+  (if (or (< x 0)
+          (< y 0))
+    nil
+    (let [zone-idx (or zone 0)
+          zone-map (get-world-map zone-idx)
+          zmlen (- (count zone-map) 1)]
+      (if (or (> x zmlen) (> y zmlen))
+        nil
+        (> (get-in zone-map [x y]) 0)))))
 
 (defn find-by-name [s]
   (when s ((keyword s) @world)))
