@@ -19,7 +19,8 @@ func set_host():
 		host = debug_host
 		#host = release_host
 	else:
-		host = release_host
+		host = debug_host
+		#host = release_host
 
 # https://docs.godotengine.org/en/3.0/getting_started/step_by_step/singletons_autoload.html
 func _ready():

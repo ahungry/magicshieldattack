@@ -1,8 +1,8 @@
 (ns msa.core
   (:require
-   ;; [compojure.route :only [files not-found] :as cr]
+   [msa.routes]
+   [compojure.core :refer [defroutes GET POST DELETE ANY OPTIONS context] :as cc]
    [cheshire.core :as cheshire]
-   [compojure.core :only [defroutes GET POST DELETE ANY context] :as cc]
    [org.httpkit.server :as server])
   (:gen-class))
 
@@ -34,7 +34,7 @@
 
 (def app
   (cc/routes
-   (-> all-routes
+   (-> msa.routes/all-routes
        (cc/wrap-routes #'wrap-headers)
        (cc/wrap-routes #'wrap-json))))
 
