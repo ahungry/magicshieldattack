@@ -18,7 +18,7 @@
 
 ;; previously 1500
 ;; Should match pulse in Main.gd
-(def world-queue-cycle-delay 250)
+(def world-queue-cycle-delay 1e3)
 
 (def verbosep nil)
 (def save-file-path "/tmp/msa.edn")

@@ -86,6 +86,7 @@
     ;; graceful shutdown: wait 100ms for existing requests to be finished
     ;; :timeout is optional, when no timeout, stop immediately
     ;; (@server :timeout 100)
+    (log/info "Stopping server.")
     (@server)
     (w/stop-queue)
     (reset! server nil)))
@@ -94,11 +95,16 @@
   ;; The #' is useful when you want to hot-reload code
   ;; You may want to take a look: https://github.com/clojure/tools.namespace
   ;; and http://http-kit.org/migration.html#reload
+  (log/info "Starting server.")
   (w/reset-world)
   (w/start-queue)
   (reset! server (server/run-server #'app {:port 3000})))
 
-(def restart (comp start stop))
+(defn restart []
+  (log/info "Restarting server.")
+  (stop)
+  (Thread/sleep 1e3)
+  (start))
 
 (defn -main [& args]
   (prn "Begin")
