@@ -4,8 +4,10 @@ const SDK = preload('SDK.gd')
 var sdk
 
 #export (PackedScene) var Player
-var pulse = 1.5
-var pulse_buffer = 0.5 # Leave a window where we 'lock' player actions.
+
+# Should match world-queue-cycle-delay in world.clj
+var pulse = 0.25
+var pulse_buffer = 0.01 # Leave a window where we 'lock' player actions.
 var seconds = pulse
 var step = 0
 var Unit = preload('res://Unit.tscn')

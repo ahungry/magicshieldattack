@@ -16,6 +16,10 @@
 (declare find-by-name)
 (declare spawn-mob)
 
+;; previously 1500
+;; Should match pulse in Main.gd
+(def world-queue-cycle-delay 250)
+
 (def verbosep nil)
 (def save-file-path "/tmp/msa.edn")
 
@@ -479,8 +483,22 @@
 
 ;; Nice
 ;; (select-keys {:a 1 :b 2 :c 3} [:a :b])
-(defn filter-by-step [step col]
+(defn filter-by-step
+  "Filter the collection of actions based on the step matching (or mob who does not
+  need to track this input).
+
+  This is in here because without it, players could inadvertently move/perform actions
+  that they didn't want (client out of sync with server).
+
+  However, having it in here results in 'lost' actions, where the client tried to do
+  some action, but then it never got processed.
+
+  May be able to improve more with the front end queue system updating
+  the step each request."
+  [step col]
   (filter #(or (= (:step %) step)
+               ;; FIXME: Temp fix to ensure we do not filter by step at all
+               (not (:mob %))
                (:mob %)) col))
 
 ;; Just adds events into the queue.
@@ -539,7 +557,7 @@
   (swap! world-step inc)
   ;; TODO: Re-enable me when things are smoothed out.
   ;; (world-to-disk)
-  (Thread/sleep 1500))
+  (Thread/sleep world-queue-cycle-delay))
 
 (defn world-boot []
   (get-world-map 0)
@@ -556,7 +574,8 @@
 ;; Process over and over
 (defn queue-runner []
   (when @*run-queue?
-    (maybe-world-resume)
+    ;; (maybe-world-resume)
+    (world-boot)
     (future (while @*run-queue? (do (process-queue))))))
 
 (defn start-queue []

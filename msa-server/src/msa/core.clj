@@ -1,5 +1,6 @@
 (ns msa.core
   (:require
+   [clojure.tools.logging :as log]
    [msa.world :as w]
    [msa.util :as u]
    [msa.routes]
@@ -13,6 +14,9 @@
 ;;   {:status  200
 ;;    :headers {"Content-Type" "text/html"}
 ;;    :body    "hello HTTP!"})
+
+(defn test-log []
+  (log/info "Hello World"))
 
 (defn hello-world [req] {:body "Hello World"})
 (defn version [req] {:body "0.0.1"})

@@ -60,7 +60,7 @@ func cb_attack(result, response_code, headers, body):
 	pass
 
 func cb_move(result, response_code, headers, body):
-	pass
+	move_queue = []
 
 func cb_chat(result, response_code, headers, body):
 	if TYPE_RAW_ARRAY == typeof(body):
@@ -146,7 +146,7 @@ func world_map(zone):
 func _process_move_queue():
 	if move_queue.size() == 0: return
 	input("cb_move", move_queue[0])
-	move_queue = []
+	#move_queue = []
 
 func _process_attack_queue():
 	if attack_queue.size() == 0: return
