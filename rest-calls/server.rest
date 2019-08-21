@@ -2,18 +2,30 @@
 
 :url = http://localhost:3000
 :username = dad
+:step = 100
 
 :headers = <<
 content-type: application/json
 #
 
-
-GET :url/world.json?username=:username
+# Check the world state (will block until the step is reached by server)
+GET :url/world.json?username=:username&step=:step
 #
 
+# Login
 POST :url/login.json
 :headers
 {
+  "name": ":username"
+}
+#
+
+# Do an action (move - others include attack or change stance etc.)
+POST :url/input.json
+:headers
+{
+  "action": "move",
+  "dir": "E",
   "name": ":username"
 }
 #
