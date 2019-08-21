@@ -2,7 +2,7 @@
 
 :url = http://localhost:3000
 :username = dad
-:step = 100
+:step = 1
 
 :headers = <<
 content-type: application/json
