@@ -111,7 +111,7 @@
     (reset! world-map (:world-map disk-data))
     (reset! world (:world disk-data))))
 
-(defn world-reset []
+(defn reset-world []
   (reset! world {}
           ;; {
           ;;  :Test {:x 3 :y 4}
@@ -444,7 +444,6 @@
           :else nil)))))
 
 (def queue (atom nil))
-(def queue-runner-mutex (atom true))
 
 (def fake [{:name "Jon" :x 1} {:name "Jon" :x 2} {:name "Fred" :x 3}])
 
@@ -518,26 +517,25 @@
   []
   ;; (when (> 3 (count (get-all-mobs)))
   ;;   (spawn-mob))
-  (when @queue-runner-mutex
-    ;; Wipe out all of last round's animation_event
-    (clear-all-events (get-world))
-    (clear-all-was-hits (get-world))
-    (regen-some-health (get-world))
-    (process-zone-changes update-unit! (get-world))
-    ;; Give the mobs a chance to do something.
-    ;; TODO: May want to plop them in queue with everyone else if we end up sorting
-    ;; actions based on speed or something.  We should also always let players resolve
-    ;; first in the meantime, as it will be very frustrating if not.
-    (doall (map handle-input (doall (map mob-ai (get-all-mobs)))))
-    (let [process-worthy (dedupe-by-name (filter-by-step @world-step @queue))]
-      (logp "Process worthy events: ")
-      (logp process-worthy)
-      (doall (map process-input (sort process-input-comparator process-worthy))))
-    (logp "yea, Done processing queue, resetting.")
-    (doall
-     (map (fn [{:keys [name x y]}]
-            (logp (format "P: %s X: %s Y: %s" name x y))) (get-world)))
-    (reset! queue nil))
+  ;; Wipe out all of last round's animation_event
+  (clear-all-events (get-world))
+  (clear-all-was-hits (get-world))
+  (regen-some-health (get-world))
+  (process-zone-changes update-unit! (get-world))
+  ;; Give the mobs a chance to do something.
+  ;; TODO: May want to plop them in queue with everyone else if we end up sorting
+  ;; actions based on speed or something.  We should also always let players resolve
+  ;; first in the meantime, as it will be very frustrating if not.
+  (doall (map handle-input (doall (map mob-ai (get-all-mobs)))))
+  (let [process-worthy (dedupe-by-name (filter-by-step @world-step @queue))]
+    (logp "Process worthy events: ")
+    (logp process-worthy)
+    (doall (map process-input (sort process-input-comparator process-worthy))))
+  (logp "yea, Done processing queue, resetting.")
+  (doall
+   (map (fn [{:keys [name x y]}]
+          (logp (format "P: %s X: %s Y: %s" name x y))) (get-world)))
+  (reset! queue nil)
   (swap! world-step inc)
   ;; TODO: Re-enable me when things are smoothed out.
   ;; (world-to-disk)
@@ -553,15 +551,17 @@
     (world-from-disk)
     (world-boot)))
 
+(def *run-queue? (atom true))
+
 ;; Process over and over
 (defn queue-runner []
-  (maybe-world-resume)
-  (future (while true (do (process-queue)))))
+  (when @*run-queue?
+    (maybe-world-resume)
+    (future (while @*run-queue? (do (process-queue))))))
 
-(defn start-queue-runner []
-  (reset! queue-runner-mutex true))
+(defn start-queue []
+  (reset! *run-queue? true)
+  (queue-runner))
 
-(defn stop-queue-runner []
-  (reset! queue-runner-mutex false))
-
-;; (queue-runner)
+(defn stop-queue []
+  (reset! *run-queue? nil))
