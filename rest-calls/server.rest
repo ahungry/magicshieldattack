@@ -1,0 +1,19 @@
+# -*- mode: restclient -*-
+
+:url = http://localhost:3000
+:username = dad
+
+:headers = <<
+content-type: application/json
+#
+
+
+GET :url/world.json?username=:username
+#
+
+POST :url/login.json
+:headers
+{
+  "name": ":username"
+}
+#
