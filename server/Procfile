@@ -1,1 +1,0 @@
-web: java -cp target/uberjar/msa.jar clojure.main -m msa.core
