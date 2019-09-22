@@ -3,6 +3,7 @@ extends Node
 # All the SDK / network related stuff here.
 
 signal ack(json)
+signal sdk_respawn(json)
 signal sdk_chat(json)
 signal sdk_login(json)
 signal sdk_world(json)
@@ -12,6 +13,7 @@ var stance = "attack"
 var step = 0
 var attack_queue = []
 var move_queue = []
+var respawn_queue = []
 var username = ""
 var password = ""
 var headers = ["Content-Type: application/json"]
@@ -61,6 +63,9 @@ func cb_attack(result, response_code, headers, body):
 
 func cb_move(result, response_code, headers, body):
 	move_queue = []
+
+func cb_respawn(result, response_code, headers, body):
+	respawn_queue = []
 
 func cb_chat(result, response_code, headers, body):
 	if TYPE_RAW_ARRAY == typeof(body):
@@ -133,6 +138,12 @@ func _move(dir):
 func move(dir):
 	move_queue.push_back({"action": "move", "dir": dir, "name": username})
 
+func _respawn():
+	input("cb_respawn", {"action": "respawn", "name": username})
+
+func respawn():
+	respawn_queue.push_back({"action": "respawn", "name": username})
+
 func attack(dir):
 	attack_queue.push_back({"action": "attack", "dir": dir, "name":
 	username, "stance": stance})
@@ -153,9 +164,15 @@ func _process_attack_queue():
 	input("cb_attack", attack_queue[0])
 	attack_queue = []
 
+func _process_respawn_queue():
+	if respawn_queue.size() == 0: return
+	input("cb_respawn", respawn_queue[0])
+	respawn_queue = []
+
 func process_queues():
 	_process_move_queue()
 	_process_attack_queue()
+	_process_respawn_queue()
 
 func _ready():
 	var qt = Timer.new()

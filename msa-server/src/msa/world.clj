@@ -344,6 +344,13 @@
     (when player
       (update-unit! name (unit/chat player chat)))))
 
+(defn handle-respawn
+  "Causes a unit by NAME to be sent back to respawn point (first floor)."
+  [{:keys [name]}]
+  (let [player (find-by-name name)]
+    (when player
+      (update-unit! name (unit/goto-home-zone player)))))
+
 (defn process-input
   "Dispatch based on the input action."
   [i]
@@ -353,6 +360,7 @@
       "move" (handle-move i)
       "attack" (handle-attack i)
       "chat" (handle-chat i)
+      "respawn" (handle-respawn i)
       nil)
     (get-world)))
 
@@ -521,7 +529,9 @@
 (defn get-dad []
   (-> (filter #(= (:name %) "dad") (get-world)) first))
 
-(defn process-zone-changes [f col]
+(defn process-zone-changes
+  "Sends the player units that are on stairs at the end of a round to the next zone."
+  [f col]
   (let [zone-candidates
         (->> col
              (filter living-and-player?)
