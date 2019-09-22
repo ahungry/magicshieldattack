@@ -382,6 +382,9 @@ func zoom_out():
 	var zoom = n.get_zoom()
 	n.set_zoom(zoom + Vector2(0.1, 0.1))
 
+func respawn():
+	sdk.respawn()
+
 func _input(event):
 	#if event.is_action_pressed('scroll_up'):
 	#	get_node('Camera2D').zoom = get_node('Camera2D').zoom - Vector2(0.1, 0.1)
@@ -394,8 +397,12 @@ func _input(event):
   # Every bind beyond here is disabled if we're typing text.
 	if get_node('HUD').is_chat_visible == true: return
 
+  # TODO: Make this cycle through slots of abilities not through actions
 	if event.is_action_pressed('ui_select'):
 		return next_action()
+
+	if event.is_action_pressed('ui_respawn'):
+		return respawn()
 
 	var move_action = ""
 	if actions[action] == "move":

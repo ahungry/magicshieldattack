@@ -140,6 +140,6 @@
 (defn goto-zone
   "Go to an exact zone."
   [n m]
-  (conj m {:zone n}))
+  (conj m {:x 0 :y 0 :zone n}))
 
 (def goto-home-zone (partial goto-zone 0))
