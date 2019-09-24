@@ -43,7 +43,9 @@ func goto_scene(path):
 
 func _deferred_goto_scene(path):
 	# Immediately free current scene
-	current_scene.free()
+	# Immediate .free seems to crash game
+	#current_scene.free()
+	current_scene.queue_free()
 
 	# Load new one
 	var s = ResourceLoader.load(path)
@@ -63,6 +65,9 @@ func _deferred_goto_scene(path):
 # Handle a bunch of the login state
 func load_game():
 	var save_game = File.new()
+	#if 1 == 1:
+	#	goto_scene('res://Gear.tscn')
+	#	return
 	if not save_game.file_exists('user://savegame.save'):
 		goto_scene("res://Login.tscn")
 		return # No game to load
