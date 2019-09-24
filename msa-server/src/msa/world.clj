@@ -65,7 +65,8 @@
            :dir "S"
            :zone 0
            :gear (random-items [(items/i-tunic)
-                                (items/i-red-scarf)
+                                ;; (items/i-red-scarf)
+                                (items/i-head-shorthair)
                                 (items/i-boots)])}
         make-map (conj p (get-valid-spawn-coords p))]
     make-map

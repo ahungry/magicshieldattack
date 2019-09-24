@@ -18,6 +18,10 @@
    :g (random-color)
    :b (random-color)})
 
+(defn i-head-shorthair []
+  {:back {:png "32-head-shorthair-back" :color (colors)}
+   :default {:png "32-head-shorthair-front" :color (colors)}})
+
 (defn i-red-scarf []
   {:back {:png "32b-red-scarf" :color (colors)}
    :default {:png "32-red-scarf-front" :color (colors)}})
