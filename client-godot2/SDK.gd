@@ -8,6 +8,7 @@ signal sdk_chat(json)
 signal sdk_login(json)
 signal sdk_world(json)
 signal sdk_world_map(json)
+signal sdk_gear(json)
 
 var stance = "attack"
 var step = 0
@@ -74,6 +75,12 @@ func cb_chat(result, response_code, headers, body):
 func cb_login(result, response_code, headers, body):
 	if TYPE_RAW_ARRAY == typeof(body):
 		emit_signal("sdk_login", parse_response(body))
+	else:
+		printt("Oops: ", body)
+
+func cb_gear(result, response_code, headers, body):
+	if TYPE_RAW_ARRAY == typeof(body):
+		emit_signal("sdk_gear", parse_response(body))
 	else:
 		printt("Oops: ", body)
 
@@ -147,6 +154,9 @@ func respawn():
 func attack(dir):
 	attack_queue.push_back({"action": "attack", "dir": dir, "name":
 	username, "stance": stance})
+
+func gear():
+	_get("cb_gear", "/gear.json?username=" + str(username))
 
 func world():
 	_get("cb_world", "/world.json?step=" + str(step + 1) + '&username=' + str(username))

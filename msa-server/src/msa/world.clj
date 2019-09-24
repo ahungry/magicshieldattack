@@ -352,6 +352,13 @@
     (when player
       (update-unit! name (unit/goto-home-zone player)))))
 
+(defn handle-gear
+  "Requests gear for a user."
+  [{:keys [name]}]
+  (let [player (find-by-name name)]
+    (when player
+      (:gear player))))
+
 (defn process-input
   "Dispatch based on the input action."
   [i]

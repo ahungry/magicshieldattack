@@ -6,6 +6,8 @@ func _ready():
   # Called every time the node is added to the scene.
   # Initialization here
   printt("Gear was loaded")
+	sdk = world.get_sdk()
+	sdk.connect("sdk_gear", self, "_ack_gear", [])
   set_process(true)
   set_process_input(true)
   # TODO: Fetch the items from server and use those
@@ -22,11 +24,21 @@ func _process(delta):
   for g in gear:
     g.play('default')
 
+func _ack_gear(json):
+	var gears = json.gear
+	boot(gear)
+	#for g in range(0, gear.size()):
+	#	var gear = g[i]
+
 func boot(items):
   load_gear(items)
 
 # Straight copy of Unit.gd func, not ideal, but it'll work for now.
 func load_gear(stubs):
+	# Delete any previously installed gear
+	for g in gear:
+		remove_child(g)
+	gear = []
   for stub in stubs:
     var res1 = load('res://assets/IsoUnits/' + stub.default.png + '-0.png')
     var res2 = load('res://assets/IsoUnits/' + stub.default.png + '-1.png')

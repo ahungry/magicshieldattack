@@ -29,3 +29,8 @@ POST :url/input.json
   "name": ":username"
 }
 #
+
+# Pull gear
+GET :url/gear.json?username=:username
+:headers
+#

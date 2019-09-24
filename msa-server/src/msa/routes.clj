@@ -22,6 +22,9 @@
 (defn json-world [m]
   {:body (w/get-world-step m)})
 
+(defn json-gear [m]
+  {:body (w/handle-gear m)})
+
 (defn version [req] {:body "0.0.1"})
 
 (defroutes all-routes
@@ -39,6 +42,11 @@
        (json-world query-params))
   (OPTIONS "/login.json" [] {:body []})
   (POST "/login.json" [] json-login)
+
+  (OPTIONS "/gear.json" [] {:body []})
+  (GET "/gear.json" {query-params :query-params}
+       (json-gear query-params))
+
   (OPTIONS "/input.json" [] {:body []})
   (POST "/input.json" req
         ;; (w/logp "Input was hit")
