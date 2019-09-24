@@ -23,7 +23,7 @@
   {:body (w/get-world-step m)})
 
 (defn json-gear [m]
-  {:body (w/handle-gear m)})
+  {:body {:gear (or (w/handle-gear m) [])}})
 
 (defn version [req] {:body "0.0.1"})
 

@@ -1,5 +1,6 @@
 (ns msa.world
   (:require
+   [clojure.tools.logging :as log]
    [clojure.repl :refer :all]
    [clojure.spec.alpha :as s]
    [clojure.spec.gen.alpha :as gen]
@@ -354,8 +355,9 @@
 
 (defn handle-gear
   "Requests gear for a user."
-  [{:keys [name]}]
-  (let [player (find-by-name name)]
+  [{:keys [username]}]
+  (log/info username)
+  (let [player (find-by-name username)]
     (when player
       (:gear player))))
 
