@@ -12,6 +12,9 @@ Yea?
 
 This is going to be sort of like that, but in a fun multiplayer game format.
 
+# Working on sprite assets
+![assets](https://github.com/ahungry/magicshieldattack/blob/master/sprites/README.md)
+
 # License
 
 AGPLv3 or later
