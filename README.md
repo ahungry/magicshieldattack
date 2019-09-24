@@ -13,7 +13,7 @@ Yea?
 This is going to be sort of like that, but in a fun multiplayer game format.
 
 # Working on sprite assets
-![assets](sprites/README.md)
+[assets](sprites/README.md)
 
 # License
 
