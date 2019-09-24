@@ -8,3 +8,6 @@ https://github.com/godotengine/godot/issues/16476
 Option is to try to compile master and run with the linked templates
 there, or to write the client in 2 as well as 3 (3 has had other
 stuttering issues before, so maybe a 2 rewrite is worthwhile).
+* TODO Possibly open a web page for advanced character maintaining of skills etc.
+Use OS.shell_open(url) to pop open
+https://godotengine.org/qa/29799/can-i-display-a-webpage-in-godot
