@@ -385,6 +385,9 @@ func zoom_out():
 func respawn():
 	sdk.respawn()
 
+func edit_gear():
+	world.goto_scene('res://Gear.tscn')
+
 func _input(event):
 	#if event.is_action_pressed('scroll_up'):
 	#	get_node('Camera2D').zoom = get_node('Camera2D').zoom - Vector2(0.1, 0.1)
@@ -403,6 +406,9 @@ func _input(event):
 
 	if event.is_action_pressed('ui_respawn'):
 		return respawn()
+
+	if event.is_action_pressed('ui_gear'):
+		return edit_gear()
 
 	var move_action = ""
 	if actions[action] == "move":

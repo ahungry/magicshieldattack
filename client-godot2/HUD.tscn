@@ -294,6 +294,7 @@ visibility_mode = 0
 
 [node name="Respawn" type="Button" parent="."]
 
+editor/display_folded = true
 anchor/top = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -322,6 +323,38 @@ shape_centered = true
 shape_visible = true
 passby_press = false
 action = "ui_respawn"
+visibility_mode = 0
+
+[node name="Gear" type="Button" parent="."]
+
+anchor/top = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 200.0
+margin/top = 169.0
+margin/right = 284.0
+margin/bottom = 100.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Gear"
+flat = false
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="Gear"]
+
+transform/pos = Vector2( 40, 30 )
+transform/scale = Vector2( 4, 4 )
+normal = null
+pressed = null
+bitmask = null
+shape = SubResource( 3 )
+shape_centered = true
+shape_visible = true
+passby_press = false
+action = "ui_gear"
 visibility_mode = 0
 
 [node name="StartButton" type="Button" parent="."]
