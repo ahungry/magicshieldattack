@@ -3,6 +3,12 @@ extends Node2D
 var gear = []
 var sdk
 
+# Should match indices of what we put in select list
+var head_gear = []
+var chest_gear = []
+var feet_gear = []
+
+# Used for reloading items on change of form
 var cached_items = []
 var head_selected_id = 0
 var chest_selected_id = 0
@@ -45,6 +51,9 @@ func boot(items):
 # Straight copy of Unit.gd func, not ideal, but it'll work for now.
 # TODO: Ensure we partition gear into the appropriate slot / group by type.
 func load_gear(stubs):
+	head_gear = []
+	chest_gear = []
+	feet_gear = []
 	var head = get_node('ButtonGroup').get_node('HeadOptionButton')
 	var head_i = 0
 	head.clear()
@@ -64,18 +73,21 @@ func load_gear(stubs):
 	for stub in stubs:
 		# Track the gear in the appropriate list/slot
 		if stub.slot == "head":
+			head_gear.push_back(stub)
 			head.add_item(stub.name, head_i)
 			head_i = head_i + 1
 			#Only show worn gear on paper doll
 			if stub.worn == false and head_selected_id != head_i - 1: continue
 
 		if stub.slot == "chest":
+			chest_gear.push_back(stub)
 			chest.add_item(stub.name, chest_i)
 			chest_i = chest_i + 1
 			#Only show worn gear on paper doll
 			if stub.worn == false and chest_selected_id != chest_i - 1: continue
 
 		if stub.slot == "feet":
+			feet_gear.push_back(stub)
 			feet.add_item(stub.name, feet_i)
 			feet_i = feet_i + 1
 			#Only show worn gear on paper doll
