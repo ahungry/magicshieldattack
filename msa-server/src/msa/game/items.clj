@@ -30,6 +30,9 @@
 (s/def ::worn boolean?)
 (s/def ::item (s/keys :req-un [::back ::default ::about ::uuid ::name ::owner ::worn]))
 
+(defn random-color []
+  (float (/ (rand-int 1000) 1000)))
+
 (defn colors []
   {:r (random-color)
    :g (random-color)
@@ -60,9 +63,6 @@
      (if (s/valid? ::item model)
        model
        (throw (Throwable. (str (s/explain ::item model))))))))
-
-(defn random-color []
-  (float (/ (rand-int 1000) 1000)))
 
 (deftest random-color-test
   (testing "We can generate a random color between 0 and 1."
