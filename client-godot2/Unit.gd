@@ -48,6 +48,11 @@ func boot(_unit_name, stubs):
 	#var stubs = [{'back': '32b-red-scarf', 'default': '32-red-scarf-front'}]
 
 func load_gear(stubs):
+	for g in gear:
+		remove_child(g)
+
+	gear = []
+
 	for stub in stubs:
 		if stub.worn == false: continue
 		var res1 = load('res://assets/IsoUnits/' + stub.default.png + '-0.png')
@@ -68,6 +73,12 @@ func load_gear(stubs):
 		s.modulate = Color(c.r, c.g, c.b)
 		add_child(s)
 		gear.push_back(s)
+		s.set_flip_h(flip_h)
+		if back:
+			s.play('back')
+		else:
+			s.play('default')
+
 		#printt('Added the gear')
 	# End for loop
 

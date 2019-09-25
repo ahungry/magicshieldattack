@@ -205,6 +205,7 @@ func _ack_world(raw_json):
 			existing.hpm = jr.hpm
 			existing.chat = jr.chat
 			existing.tween_to(jr.x, jr.y, jr.dir, Map)
+			existing.load_gear(jr.gear)
 			animation_event(existing, jr)
 			xp_scale(existing, jr)
 
