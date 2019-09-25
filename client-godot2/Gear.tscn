@@ -4,12 +4,12 @@
 [ext_resource path="res://assets/IsoUnits/knight-0.png" type="Texture" id=2]
 [ext_resource path="res://assets/IsoUnits/knight-1.png" type="Texture" id=3]
 
-[sub_resource type="RectangleShape2D" id=2]
+[sub_resource type="RectangleShape2D" id=1]
 
 custom_solver_bias = 0.0
 extents = Vector2( 10, 10 )
 
-[sub_resource type="SpriteFrames" id=1]
+[sub_resource type="SpriteFrames" id=2]
 
 animations = [ {
 "frames": [ ExtResource( 2 ), ExtResource( 3 ) ],
@@ -58,17 +58,39 @@ transform/scale = Vector2( 30, 1 )
 normal = null
 pressed = null
 bitmask = null
-shape = SubResource( 2 )
+shape = SubResource( 1 )
 shape_centered = true
 shape_visible = true
 passby_press = false
 action = "ui_gear"
 visibility_mode = 0
 
+[node name="HeadOptionButton" type="OptionButton" parent="ButtonGroup"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 20.0
+margin/right = 497.0
+margin/bottom = 40.0
+toggle_mode = true
+click_on_press = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Head"
+flat = false
+align = 0
+selected = -1
+items = [  ]
+
 [node name="Doll" type="AnimatedSprite" parent="."]
 
 transform/pos = Vector2( 779.206, 159.942 )
-frames = SubResource( 1 )
+frames = SubResource( 2 )
 animation = "default"
+
+[connection signal="item_selected" from="ButtonGroup/HeadOptionButton" to="." method="_on_HeadOptionButton_item_selected"]
 
 

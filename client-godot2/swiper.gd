@@ -9,7 +9,7 @@ func _ready():
 	set_process_unhandled_input(true)
 
 func _unhandled_input(event):
-	printt("Handling some unhandled input")
+	#printt("Handling some unhandled input")
 	if event.is_action_pressed("ui_click"):
 		#var pos = get_viewport().get_mouse_position()
 		var pos = get_global_mouse_pos()

@@ -37,7 +37,12 @@ func boot(items):
 	load_gear(items)
 
 # Straight copy of Unit.gd func, not ideal, but it'll work for now.
+# TODO: Ensure we partition gear into the appropriate slot / group by type.
 func load_gear(stubs):
+	var head = get_node('ButtonGroup').get_node('HeadOptionButton')
+	var head_i = 0
+	head.clear()
+
 	# Delete any previously installed gear
 	for g in gear:
 		remove_child(g)
@@ -66,13 +71,21 @@ func load_gear(stubs):
 		#get_node('Doll').add_child(s)
 		add_child(s)
 		gear.push_back(s)
+		head.add_item(stub.default.png, head_i)
+		head_i = head_i + 1
 		#printt('Added the gear')
+
 	# End for loop
 
 func stop_editing_gear():
 	world.goto_scene('res://Main.tscn')
 
 func _input(event):
-	printt("Clicked the booton in Gear.gd")
+	#printt("Clicked the booton in Gear.gd")
 	if event.is_action_pressed('ui_gear'):
 		return stop_editing_gear()
+
+
+func _on_HeadOptionButton_item_selected( ID ):
+	printt("Item selected", ID);
+	pass # replace with function body
