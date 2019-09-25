@@ -71,7 +71,8 @@ func load_gear(stubs):
 		#get_node('Doll').add_child(s)
 		add_child(s)
 		gear.push_back(s)
-		head.add_item(stub.default.png, head_i)
+		printt("gear was:", stub)
+		head.add_item(stub.name, head_i)
 		head_i = head_i + 1
 		#printt('Added the gear')
 

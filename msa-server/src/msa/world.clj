@@ -65,10 +65,12 @@
            :y (coord)
            :dir "S"
            :zone 0
-           :gear (random-items [(items/i-tunic)
-                                ;; (items/i-red-scarf)
-                                (items/i-head-shorthair)
-                                (items/i-boots)])}
+           ;; Just start everyone with enough gear to customize their look some.
+           ;; Players can eventually find / get additional gear to be added to their list.
+           :gear  [(items/i-tunic)
+                   (items/i-red-scarf)
+                   (items/i-head-shorthair)
+                   (items/i-boots)]}
         make-map (conj p (get-valid-spawn-coords p))]
     make-map
     ;; (unit/make make-map)
