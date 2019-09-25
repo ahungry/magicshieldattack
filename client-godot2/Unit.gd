@@ -49,6 +49,7 @@ func boot(_unit_name, stubs):
 
 func load_gear(stubs):
 	for stub in stubs:
+		if stub.worn == false: continue
 		var res1 = load('res://assets/IsoUnits/' + stub.default.png + '-0.png')
 		var res2 = load('res://assets/IsoUnits/' + stub.default.png + '-1.png')
 		var res3 = load('res://assets/IsoUnits/' + stub.back.png + '-0.png')

@@ -105,3 +105,17 @@
          :uuid "4"
          :slot "feet"
          }))
+
+(defn member? [x xs]
+  (contains? (set xs) x))
+
+(defn wear-if-member
+  "Given a vector of uuids, if the uuid matches, consider it worn."
+  [uuids]
+  (fn [item]
+    (if (member? (:uuid item) uuids)
+      (conj item {:worn true})
+      (conj item {:worn false}))))
+
+(defn wear-items-by-matching-uuids [col uuids]
+  (map (wear-if-member uuids) col))

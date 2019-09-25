@@ -3,7 +3,9 @@
    [clojure.spec.alpha :as s]
    [clojure.spec.gen.alpha :as gen]
    [clojure.spec.test.alpha :as stest]
-   [clojure.repl :refer :all]))
+   [clojure.repl :refer :all]
+   [msa.game.items :as items]
+   ))
 
 ;; If this is ever an optimization issue, use subvec to avoid vec -> list -> vec
 (defn take-latest-5 [col]
@@ -143,3 +145,8 @@
   (conj m {:x 0 :y 0 :zone n}))
 
 (def goto-home-zone (partial goto-zone 0))
+
+(defn wear-gear-by-uuids
+  "Receive a coll of gear uuids - ensure they are worn in the user."
+  [unit uuids]
+  (update-in unit [:gear] items/wear-items-by-matching-uuids uuids))

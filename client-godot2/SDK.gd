@@ -4,6 +4,7 @@ extends Node
 
 signal ack(json)
 signal sdk_respawn(json)
+signal sdk_change_gear(json)
 signal sdk_chat(json)
 signal sdk_login(json)
 signal sdk_world(json)
@@ -15,6 +16,7 @@ var step = 0
 var attack_queue = []
 var move_queue = []
 var respawn_queue = []
+var change_gear_queue = []
 var username = ""
 var password = ""
 var headers = ["Content-Type: application/json"]
@@ -67,6 +69,9 @@ func cb_move(result, response_code, headers, body):
 
 func cb_respawn(result, response_code, headers, body):
 	respawn_queue = []
+
+func cb_change_gear(result, response_code, headers, body):
+	change_gear_queue = []
 
 func cb_chat(result, response_code, headers, body):
 	if TYPE_RAW_ARRAY == typeof(body):
@@ -151,6 +156,14 @@ func _respawn():
 func respawn():
 	respawn_queue.push_back({"action": "respawn", "name": username})
 
+#func _change_gear():
+#	input("cb_change_gear", {"action": "change_gear", "name": username})
+
+# The uuid of the items to wear
+func change_gear(head, chest, feet):
+	change_gear_queue.push_back({"action": "change_gear", "name":
+	username, "head": head, "chest": chest, "feet": feet})
+
 func attack(dir):
 	attack_queue.push_back({"action": "attack", "dir": dir, "name":
 	username, "stance": stance})
@@ -179,10 +192,16 @@ func _process_respawn_queue():
 	input("cb_respawn", respawn_queue[0])
 	respawn_queue = []
 
+func _process_change_gear_queue():
+	if change_gear_queue.size() == 0: return
+	input("cb_change_gear", change_gear_queue[0])
+	change_gear_queue = []
+
 func process_queues():
 	_process_move_queue()
 	_process_attack_queue()
 	_process_respawn_queue()
+	_process_change_gear_queue()
 
 func _ready():
 	var qt = Timer.new()

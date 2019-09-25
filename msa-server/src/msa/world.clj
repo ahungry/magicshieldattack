@@ -67,10 +67,10 @@
            :zone 0
            ;; Just start everyone with enough gear to customize their look some.
            ;; Players can eventually find / get additional gear to be added to their list.
-           :gear  [(items/i-tunic)
-                   (items/i-red-scarf)
-                   (items/i-head-shorthair)
-                   (items/i-boots)]}
+           :gear  [(conj (items/i-tunic) {:worn true})
+                   (conj (items/i-red-scarf) {:worn true})
+                   (conj (items/i-boots) {:worn true})
+                   (items/i-head-shorthair)]}
         make-map (conj p (get-valid-spawn-coords p))]
     make-map
     ;; (unit/make make-map)
@@ -363,6 +363,15 @@
     (when player
       (:gear player))))
 
+(defn handle-change-gear
+  "Update the gear the user wants to equip.
+  The item slot references correspond to the UUID of the item to put on."
+  [{:keys [name head chest feet]}]
+  (log/info "change_gear input called" name head chest feet)
+  (let [player (find-by-name name)]
+    (when player
+      (update-unit! name (unit/wear-gear-by-uuids player [head chest feet])))))
+
 (defn process-input
   "Dispatch based on the input action."
   [i]
@@ -373,6 +382,7 @@
       "attack" (handle-attack i)
       "chat" (handle-chat i)
       "respawn" (handle-respawn i)
+      "change_gear" (handle-change-gear i)
       nil)
     (get-world)))
 

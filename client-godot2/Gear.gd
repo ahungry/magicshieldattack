@@ -128,10 +128,22 @@ func reload_gear():
 func stop_editing_gear():
 	world.goto_scene('res://Main.tscn')
 
+func stop_editing_gear_and_save():
+	var head_chosen = head_gear[head_selected_id]
+	var chest_chosen = chest_gear[chest_selected_id]
+	var feet_chosen = feet_gear[feet_selected_id]
+	printt("New gear selections are:")
+	printt(head_chosen)
+	printt(chest_chosen)
+	printt(feet_chosen)
+	# TODO: Send via json to sdk to update the gear selection
+
 func _input(event):
 	#printt("Clicked the booton in Gear.gd")
 	if event.is_action_pressed('ui_gear'):
 		return stop_editing_gear()
+	if event.is_action_pressed('ui_select'):
+		return stop_editing_gear_and_save()
 
 func _on_HeadOptionButton_item_selected( ID ):
 	printt("Head item selected", ID)

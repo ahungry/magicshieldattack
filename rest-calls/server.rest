@@ -34,3 +34,15 @@ POST :url/input.json
 GET :url/gear.json?username=:username
 :headers
 #
+
+# Do an action (move - others include attack or change stance etc.)
+POST :url/input.json
+:headers
+{
+  "action": "change_gear",
+  "head": "2",
+  "chest": "3",
+  "feet": "4",
+  "name": ":username"
+}
+#
