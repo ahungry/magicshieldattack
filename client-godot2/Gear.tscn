@@ -85,6 +85,46 @@ align = 0
 selected = -1
 items = [  ]
 
+[node name="ChestOptionButton" type="OptionButton" parent="ButtonGroup"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 40.0
+margin/right = 497.0
+margin/bottom = 60.0
+toggle_mode = true
+click_on_press = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Chest"
+flat = false
+align = 0
+selected = -1
+items = [  ]
+
+[node name="FeetOptionButton" type="OptionButton" parent="ButtonGroup"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 60.0
+margin/right = 497.0
+margin/bottom = 80.0
+toggle_mode = true
+click_on_press = true
+enabled_focus_mode = 2
+shortcut = null
+text = "Feet"
+flat = false
+align = 0
+selected = -1
+items = [  ]
+
 [node name="Doll" type="AnimatedSprite" parent="."]
 
 transform/pos = Vector2( 779.206, 159.942 )
@@ -92,5 +132,9 @@ frames = SubResource( 2 )
 animation = "default"
 
 [connection signal="item_selected" from="ButtonGroup/HeadOptionButton" to="." method="_on_HeadOptionButton_item_selected"]
+
+[connection signal="item_selected" from="ButtonGroup/ChestOptionButton" to="." method="_on_ChestOptionButton_item_selected"]
+
+[connection signal="item_selected" from="ButtonGroup/FeetOptionButton" to="." method="_on_FeetOptionButton_item_selected"]
 
 

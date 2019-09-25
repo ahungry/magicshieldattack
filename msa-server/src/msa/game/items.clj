@@ -8,7 +8,7 @@
   )
 
 (defrecord ItemImage [png color])
-(defrecord Item [back default about])
+(defrecord Item [back default about uuid name owner worn])
 
 (s/def ::color-value number?)
 (s/def ::r ::color-value)
@@ -26,7 +26,9 @@
 (s/def ::uuid ::non-empty-string)
 (s/def ::name ::non-empty-string)
 (s/def ::slot ::non-empty-string)
-(s/def ::item (s/keys :req-un [::back ::default ::about ::uuid ::name]))
+(s/def ::owner ::non-empty-string)
+(s/def ::worn boolean?)
+(s/def ::item (s/keys :req-un [::back ::default ::about ::uuid ::name ::owner ::worn]))
 
 (defn colors []
   {:r (random-color)
@@ -52,6 +54,8 @@
                        :name "Red Scarf"
                        :slot "head"
                        :uuid "0"
+                       :worn false
+                       :owner "nobody"
                        } m))]
      (if (s/valid? ::item model)
        model

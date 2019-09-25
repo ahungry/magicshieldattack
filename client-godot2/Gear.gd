@@ -3,6 +3,11 @@ extends Node2D
 var gear = []
 var sdk
 
+var cached_items = []
+var head_selected_id = 0
+var chest_selected_id = 0
+var feet_selected_id = 0
+
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
@@ -13,13 +18,13 @@ func _ready():
 	set_process(true)
 	set_process_input(true)
 	# TODO: Fetch the items from server and use those
-	var items = [
-	{
-		'back': {'png': '32b-red-scarf', 'color': {'r': 1, 'g': 1, 'b': 1}},
-		'default': {'png': '32-red-scarf-front', 'color': {'r': 1, 'g': 1, 'b': 1}}
-	}
-	]
-	boot(items)
+	#var items = [
+	#{
+	#	'back': {'png': '32b-red-scarf', 'color': {'r': 1, 'g': 1, 'b': 1}},
+	#	'default': {'png': '32-red-scarf-front', 'color': {'r': 1, 'g': 1, 'b': 1}}
+	#}
+	#]
+	#boot(items)
 
 func _process(delta):
 	get_node('Doll').play('default')
@@ -34,6 +39,7 @@ func _ack_gear(json):
 	# var gear = g[i]
 
 func boot(items):
+	cached_items = items
 	load_gear(items)
 
 # Straight copy of Unit.gd func, not ideal, but it'll work for now.
@@ -42,13 +48,39 @@ func load_gear(stubs):
 	var head = get_node('ButtonGroup').get_node('HeadOptionButton')
 	var head_i = 0
 	head.clear()
+	var chest = get_node('ButtonGroup').get_node('ChestOptionButton')
+	var chest_i = 0
+	chest.clear()
+	var feet = get_node('ButtonGroup').get_node('FeetOptionButton')
+	var feet_i = 0
+	feet.clear()
 
 	# Delete any previously installed gear
 	for g in gear:
 		remove_child(g)
+
 	gear = []
+
 	for stub in stubs:
-		printt("Stub gear is: ", stub)
+		# Track the gear in the appropriate list/slot
+		if stub.slot == "head":
+			head.add_item(stub.name, head_i)
+			head_i = head_i + 1
+			#Only show worn gear on paper doll
+			if stub.worn == false and head_selected_id != head_i - 1: continue
+
+		if stub.slot == "chest":
+			chest.add_item(stub.name, chest_i)
+			chest_i = chest_i + 1
+			#Only show worn gear on paper doll
+			if stub.worn == false and chest_selected_id != chest_i - 1: continue
+
+		if stub.slot == "feet":
+			feet.add_item(stub.name, feet_i)
+			feet_i = feet_i + 1
+			#Only show worn gear on paper doll
+			if stub.worn == false and feet_selected_id != feet_i - 1: continue
+
 		var res1 = load('res://assets/IsoUnits/' + stub.default.png + '-0.png')
 		var res2 = load('res://assets/IsoUnits/' + stub.default.png + '-1.png')
 		var res3 = load('res://assets/IsoUnits/' + stub.back.png + '-0.png')
@@ -71,12 +103,15 @@ func load_gear(stubs):
 		#get_node('Doll').add_child(s)
 		add_child(s)
 		gear.push_back(s)
-		printt("gear was:", stub)
-		head.add_item(stub.name, head_i)
-		head_i = head_i + 1
 		#printt('Added the gear')
-
 	# End for loop
+	head.select(head_selected_id)
+	chest.select(chest_selected_id)
+	feet.select(feet_selected_id)
+# End load_gear
+
+func reload_gear():
+	load_gear(cached_items)
 
 func stop_editing_gear():
 	world.goto_scene('res://Main.tscn')
@@ -86,7 +121,17 @@ func _input(event):
 	if event.is_action_pressed('ui_gear'):
 		return stop_editing_gear()
 
-
 func _on_HeadOptionButton_item_selected( ID ):
-	printt("Item selected", ID);
-	pass # replace with function body
+	printt("Head item selected", ID)
+	head_selected_id = ID
+	reload_gear()
+
+func _on_ChestOptionButton_item_selected( ID ):
+	printt("Chest item selected", ID)
+	chest_selected_id = ID
+	reload_gear()
+
+func _on_FeetOptionButton_item_selected( ID ):
+	printt("Feet item selected", ID)
+	feet_selected_id = ID
+	reload_gear()
