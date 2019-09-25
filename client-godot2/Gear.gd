@@ -10,9 +10,9 @@ var feet_gear = []
 
 # Used for reloading items on change of form
 var cached_items = []
-var head_selected_id = 0
-var chest_selected_id = 0
-var feet_selected_id = 0
+var head_selected_id = -1
+var chest_selected_id = -1
+var feet_selected_id = -1
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -77,21 +77,30 @@ func load_gear(stubs):
 			head.add_item(stub.name, head_i)
 			head_i = head_i + 1
 			#Only show worn gear on paper doll
-			if stub.worn == false and head_selected_id != head_i - 1: continue
+			if head_selected_id < 0:
+				if stub.worn == true:
+					head_selected_id = head_i -1
+			if head_selected_id != head_i - 1: continue
 
 		if stub.slot == "chest":
 			chest_gear.push_back(stub)
 			chest.add_item(stub.name, chest_i)
 			chest_i = chest_i + 1
 			#Only show worn gear on paper doll
-			if stub.worn == false and chest_selected_id != chest_i - 1: continue
+			if chest_selected_id < 0:
+				if stub.worn == true:
+					chest_selected_id = chest_i -1
+			if chest_selected_id != chest_i - 1: continue
 
 		if stub.slot == "feet":
 			feet_gear.push_back(stub)
 			feet.add_item(stub.name, feet_i)
 			feet_i = feet_i + 1
 			#Only show worn gear on paper doll
-			if stub.worn == false and feet_selected_id != feet_i - 1: continue
+			if feet_selected_id < 0:
+				if stub.worn == true:
+					feet_selected_id = feet_i -1
+			if feet_selected_id != feet_i - 1: continue
 
 		var res1 = load('res://assets/IsoUnits/' + stub.default.png + '-0.png')
 		var res2 = load('res://assets/IsoUnits/' + stub.default.png + '-1.png')
@@ -132,11 +141,12 @@ func stop_editing_gear_and_save():
 	var head_chosen = head_gear[head_selected_id]
 	var chest_chosen = chest_gear[chest_selected_id]
 	var feet_chosen = feet_gear[feet_selected_id]
-	printt("New gear selections are:")
-	printt(head_chosen)
-	printt(chest_chosen)
-	printt(feet_chosen)
-	# TODO: Send via json to sdk to update the gear selection
+	sdk.change_gear(
+	  head_chosen.uuid,
+	  chest_chosen.uuid,
+	  feet_chosen.uuid
+	)
+	stop_editing_gear()
 
 func _input(event):
 	#printt("Clicked the booton in Gear.gd")
