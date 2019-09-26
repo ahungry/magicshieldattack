@@ -81,7 +81,7 @@ func _process(delta):
 			#$Light.position = player_unit.position
 
 func xp_scale(unit, json):
-	var ratio = min(1.5, max(0.5, json.xp / 20))
+	var ratio = min(1.5, max(0.5, json.xp / json.zone))
 	unit.set_scale(Vector2(ratio, ratio))
 	#unit.scale = Vector2(ratio, ratio)
 
@@ -237,6 +237,7 @@ func _ack_world(raw_json):
 				m.map = Map
 				m.tween_to(jr.x, jr.y, jr.dir, Map)
 				m.set_stance(jr.stance)
+				xp_scale(m, jr)
 				units.push_back(m)
 				get_node('TileMap2').add_child(m)
 		# else

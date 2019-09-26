@@ -68,10 +68,17 @@
            ;; Just start everyone with enough gear to customize their look some.
            ;; Players can eventually find / get additional gear to be added to their list.
            :gear  [(conj (items/i-tunic) {:worn true})
-                   (items/i-tunic-longsleeves)
                    (conj (items/i-red-scarf) {:worn true})
                    (conj (items/i-boots) {:worn true})
+                   ;; Give starting person some variety of items to pick.
+                   (items/i-tunic)
+                   (items/i-red-scarf)
+                   (items/i-boots)
+                   (items/i-tunic-longsleeves)
+                   (items/i-tunic-longsleeves)
                    (items/i-tallboots)
+                   (items/i-tallboots)
+                   (items/i-head-shorthair)
                    (items/i-head-shorthair)]}
         make-map (conj p (get-valid-spawn-coords p))]
     make-map
@@ -251,8 +258,9 @@
   (let [p (find-by-name name)]
     (update-unit! name (conj p {:was_hit was?}))))
 
-;; TODO: Change pure xp to levels
-(defn update-xp! [name n]
+(defn update-xp!
+  "Apply N xp (usually scaled by zone) to player of NAME."
+  [name n]
   (let [p (find-by-name name)]
     (when (not (:mob p))
       (update-unit! name (conj p {:xp (inc (:xp p))
@@ -304,7 +312,7 @@
         xp-def (* def xp-diff 0.2)]
     (int (* zone scale (max 1 (- xp-atk xp-def))))))
 
-(defn apply-damage [{:keys [name atk xp] :as attacker}
+(defn apply-damage [{:keys [name atk xp zone] :as attacker}
                     {:keys [hp x y def] :as defender}]
   (let [damage-done (damage-formula attacker defender)]
     (update-event! name {:event "attack" :x x :y y})
@@ -313,10 +321,11 @@
      (format "%sYou hit someone for %s damage!"
              (msa-attack-scale-message attacker defender)
              damage-done))
-    ;; TODO : Make xp assignment better (dynamic)
-    (update-xp! name 1)
+    ;; Give some xp if the unit was alive when damage was applied and not a one-shot.
+    (when (> (- hp damage-done) 0)
+      (update-xp! name zone))
     (update-unit! (:name defender) (conj defender {:was_hit true
-                                                   :hp (- hp damage-done)}))))
+                                                   :hp (max -5 (- hp damage-done))}))))
 
 ;; TODO: Probably update to use a get-all-on-coords and apply damage via names
 ;; and the name lookups (slightly slower, but more maintainable).

@@ -70,13 +70,16 @@
       (is (>= c 0))
       (is (<= c 1)))))
 
+(defn uuid []
+  (str (rand-int 100)))
+
 (defn i-head-shorthair []
   (make {:png-back "32-head-shorthair-back"
          :png-front "32-head-shorthair-front"
          :about "A fancy short haircut."
          :name "Short Haircut"
          :slot "head"
-         :uuid "1"
+         :uuid (uuid)
          }))
 
 (defn i-red-scarf []
@@ -84,7 +87,7 @@
          :png-front "32-red-scarf-front"
          :about "A warm red scarf with a long ponytail."
          :name "Scarf"
-         :uuid "2"
+         :uuid (uuid)
          :slot "head"
          }))
 
@@ -93,7 +96,7 @@
          :png-front "32-tunic"
          :about "Cozy tunic to keep you warm."
          :name "Tunic"
-         :uuid "3"
+         :uuid (uuid)
          :slot "chest"
          }))
 
@@ -102,7 +105,7 @@
          :png-front "32-chest-tunic-longsleeves-front"
          :about "Long sleeved cozy tunic to keep you warm."
          :name "Longsleeved Tunic"
-         :uuid "5"
+         :uuid (uuid)
          :slot "chest"
          }))
 
@@ -111,7 +114,7 @@
          :png-front "32-boots"
          :about "Plain old boots."
          :name "Boots"
-         :uuid "4"
+         :uuid (uuid)
          :slot "feet"
          }))
 
@@ -120,7 +123,7 @@
          :png-front "32-feet-tallboots-front"
          :about "Plain old tall boots."
          :name "Tall Boots"
-         :uuid "6"
+         :uuid (uuid)
          :slot "feet"
          }))
 

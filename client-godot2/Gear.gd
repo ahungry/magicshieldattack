@@ -75,7 +75,7 @@ func load_gear(stubs):
 		# Track the gear in the appropriate list/slot
 		if stub.slot == "head":
 			head_gear.push_back(stub)
-			head.add_item(stub.name, head_i)
+			head.add_item(stub.name + ' ' + stub.uuid, head_i)
 			head_i = head_i + 1
 			#Only show worn gear on paper doll
 			if head_selected_id < 0:
@@ -85,7 +85,7 @@ func load_gear(stubs):
 
 		if stub.slot == "chest":
 			chest_gear.push_back(stub)
-			chest.add_item(stub.name, chest_i)
+			chest.add_item(stub.name + ' ' + stub.uuid, chest_i)
 			chest_i = chest_i + 1
 			#Only show worn gear on paper doll
 			if chest_selected_id < 0:
@@ -95,7 +95,7 @@ func load_gear(stubs):
 
 		if stub.slot == "feet":
 			feet_gear.push_back(stub)
-			feet.add_item(stub.name, feet_i)
+			feet.add_item(stub.name + ' ' + stub.uuid, feet_i)
 			feet_i = feet_i + 1
 			#Only show worn gear on paper doll
 			if feet_selected_id < 0:
