@@ -115,6 +115,15 @@
          :slot "feet"
          }))
 
+(defn i-tallboots []
+  (make {:png-back "32-feet-tallboots-back"
+         :png-front "32-feet-tallboots-front"
+         :about "Plain old tall boots."
+         :name "Tall Boots"
+         :uuid "6"
+         :slot "feet"
+         }))
+
 (defn member? [x xs]
   (contains? (set xs) x))
 

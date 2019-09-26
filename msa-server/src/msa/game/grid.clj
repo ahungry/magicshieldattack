@@ -29,7 +29,7 @@
 
 ;; Wow, looks terrible!
 (defn world-map-grid [n]
-  (map-into (fn [x] (map-into (fn [y] 0) (range n))) (range n)))
+  (map-into (fn [x] (map-into (fn [y] (rand-int 2)) (range n))) (range n)))
 
 (defn stub-map []
   [

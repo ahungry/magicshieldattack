@@ -71,6 +71,7 @@
                    (items/i-tunic-longsleeves)
                    (conj (items/i-red-scarf) {:worn true})
                    (conj (items/i-boots) {:worn true})
+                   (items/i-tallboots)
                    (items/i-head-shorthair)]}
         make-map (conj p (get-valid-spawn-coords p))]
     make-map
@@ -90,7 +91,7 @@
 
 (defn set-world-map [n]
   (let [map-idx (keyword (str n))]
-    (swap! world-map conj {map-idx (grid/generate-world-map (* 10 n))})
+    (swap! world-map conj {map-idx (grid/generate-world-map (* 1 n))})
     (doall (map (fn [_] (spawn-mob n)) (range n)))))
 
 (defn get-world-map
