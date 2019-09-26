@@ -39,7 +39,7 @@ func _process(delta):
 	pass
 
 func _ack_gear(json):
-	printt("Gear rec was:", json)
+	#printt("Gear rec was:", json)
 	var gears = json.gear
 	boot(gears)
 	#for g in range(0, gear.size()):

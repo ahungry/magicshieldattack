@@ -32,19 +32,20 @@ margin/left = 0.0
 margin/top = 0.0
 margin/right = 497.0
 margin/bottom = 582.0
-alignment = 1
+alignment = 0
 
 [node name="Button1" type="Button" parent="ButtonGroup"]
 
 editor/display_folded = true
+rect/min_size = Vector2( 0, 100 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
-margin/top = 241.0
+margin/top = 0.0
 margin/right = 497.0
-margin/bottom = 261.0
+margin/bottom = 100.0
 toggle_mode = true
 click_on_press = true
 enabled_focus_mode = 2
@@ -68,14 +69,15 @@ visibility_mode = 0
 
 [node name="Button" type="Button" parent="ButtonGroup"]
 
+rect/min_size = Vector2( 0, 50 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
-margin/top = 261.0
+margin/top = 100.0
 margin/right = 497.0
-margin/bottom = 281.0
+margin/bottom = 150.0
 toggle_mode = true
 click_on_press = true
 enabled_focus_mode = 2
@@ -99,19 +101,19 @@ visibility_mode = 0
 
 [node name="HeadOptionButton" type="OptionButton" parent="ButtonGroup"]
 
+rect/min_size = Vector2( 0, 100 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
-margin/top = 281.0
+margin/top = 150.0
 margin/right = 497.0
-margin/bottom = 301.0
+margin/bottom = 250.0
 toggle_mode = true
 click_on_press = true
 enabled_focus_mode = 2
 shortcut = null
-text = "Head"
 flat = false
 align = 0
 selected = -1
@@ -119,19 +121,19 @@ items = [  ]
 
 [node name="ChestOptionButton" type="OptionButton" parent="ButtonGroup"]
 
+rect/min_size = Vector2( 0, 100 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
-margin/top = 301.0
+margin/top = 250.0
 margin/right = 497.0
-margin/bottom = 321.0
+margin/bottom = 350.0
 toggle_mode = true
 click_on_press = true
 enabled_focus_mode = 2
 shortcut = null
-text = "Chest"
 flat = false
 align = 0
 selected = -1
@@ -139,19 +141,19 @@ items = [  ]
 
 [node name="FeetOptionButton" type="OptionButton" parent="ButtonGroup"]
 
+rect/min_size = Vector2( 0, 100 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
-margin/top = 321.0
+margin/top = 350.0
 margin/right = 497.0
-margin/bottom = 341.0
+margin/bottom = 450.0
 toggle_mode = true
 click_on_press = true
 enabled_focus_mode = 2
 shortcut = null
-text = "Feet"
 flat = false
 align = 0
 selected = -1
