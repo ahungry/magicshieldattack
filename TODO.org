@@ -23,3 +23,7 @@ end up botching the entire game state.
 * TODO When mob dies, despawn it next refresh
 * TODO Ensure that we stop showing mob on map when they aren't in our zone
 Note <2019-09-22 Sun> - I think this one is done?
+* TODO Add an optim for gear
+We can track last gear changed on server (store the step).  For a
+given unit we've drawn, if gear hasn't changed since that step, don't
+bother repainting the gear on client.
