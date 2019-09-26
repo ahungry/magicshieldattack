@@ -209,7 +209,7 @@
   (remove-by-key @world (keyword s)))
 
 (defn small-world []
-  (map #(select-keys % [:name :x :y :hp :stance :zone]) (get-world)))
+  (map #(select-keys % [:name :x :y :hp :xp :zone]) (get-world)))
 
 (defn update-unit!
   "Set the unit NAME to the values UNIT map."
@@ -293,13 +293,16 @@
     0.5 (format "Your %s loses to %s! Half damage!\n" (:stance attacker) (:stance defender))
     true))
 
-(defn damage-formula [{:keys [atk xp] :as attacker}
-                      {:keys [def] :as defender}]
+(defn damage-formula
+  "Figure out how much damage an attack and defender should do to each other.
+  For now, zone 0 is 'safe', aka, no damage will occur there."
+  [{:keys [atk xp] :as attacker}
+   {:keys [def zone] :as defender}]
   (let [scale (msa-attack-scale (:stance attacker) (:stance defender))
         xp-diff (max 1 (- xp (:xp defender)))
         xp-atk (* atk xp-diff 0.5)
         xp-def (* def xp-diff 0.2)]
-    (int (* scale (max 1 (- xp-atk xp-def))))))
+    (int (* zone scale (max 1 (- xp-atk xp-def))))))
 
 (defn apply-damage [{:keys [name atk xp] :as attacker}
                     {:keys [hp x y def] :as defender}]
@@ -396,13 +399,23 @@
 (defn random-name [s]
   (format "%s-%s" s (rand-int 10000)))
 
+(defn scale-for-zone
+  "Given a unit M, scale it appropriately to the zone we're in."
+  [m]
+  (conj m {:xp (* (:zone m) 5)
+           :atk (* (:zone m) 2)
+           :def (* (:zone m) 2)
+           :hpm (* (:zone m) 50)
+           :hp (* (:zone m) 50)}))
+
 (defn spawn-mob
   "Spawn a mob on the ZONE."
   [zone]
   (let [name (random-name "Mob-")
         p (player name)
-        p2 (conj p {:mob true :zone zone})]
-    (update-unit! name p2)))
+        p2 (conj p {:mob true :zone zone})
+        p3 (scale-for-zone p2)]
+    (update-unit! name p3)))
 
 (defn get-all-mobs []
   (filter #(:mob %) (get-world)))
