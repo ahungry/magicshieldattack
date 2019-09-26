@@ -97,6 +97,15 @@
          :slot "chest"
          }))
 
+(defn i-tunic-longsleeves []
+  (make {:png-back "32-chest-tunic-longsleeves-back"
+         :png-front "32-chest-tunic-longsleeves-front"
+         :about "Long sleeved cozy tunic to keep you warm."
+         :name "Longsleeved Tunic"
+         :uuid "5"
+         :slot "chest"
+         }))
+
 (defn i-boots []
   (make {:png-back "32-boots"
          :png-front "32-boots"

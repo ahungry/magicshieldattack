@@ -33,9 +33,10 @@ func _ready():
 	#boot(items)
 
 func _process(delta):
-	get_node('Doll').play('default')
-	for g in gear:
-		g.play('default')
+	#get_node('Doll').play('default')
+	#for g in gear:
+	#	g.play('default')
+	pass
 
 func _ack_gear(json):
 	printt("Gear rec was:", json)
@@ -118,6 +119,8 @@ func load_gear(stubs):
 		s.frames = f
 		s.animation = 'default'
 		s.play('default')
+		get_node('Doll').stop()
+		get_node('Doll').play('default')
 		s.set_flip_h(false)
 		var c = stub.default.color
 		s.modulate = Color(c.r, c.g, c.b)

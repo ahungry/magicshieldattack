@@ -68,6 +68,7 @@
            ;; Just start everyone with enough gear to customize their look some.
            ;; Players can eventually find / get additional gear to be added to their list.
            :gear  [(conj (items/i-tunic) {:worn true})
+                   (items/i-tunic-longsleeves)
                    (conj (items/i-red-scarf) {:worn true})
                    (conj (items/i-boots) {:worn true})
                    (items/i-head-shorthair)]}
