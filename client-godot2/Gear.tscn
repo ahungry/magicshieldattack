@@ -36,7 +36,6 @@ alignment = 0
 
 [node name="Button1" type="Button" parent="ButtonGroup"]
 
-editor/display_folded = true
 rect/min_size = Vector2( 0, 100 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -55,8 +54,8 @@ flat = false
 
 [node name="TouchScreenButton" type="TouchScreenButton" parent="ButtonGroup/Button1"]
 
-transform/pos = Vector2( 275, 10 )
-transform/scale = Vector2( 30, 1 )
+transform/pos = Vector2( 275, 45 )
+transform/scale = Vector2( 30, 5 )
 normal = null
 pressed = null
 bitmask = null
@@ -87,8 +86,8 @@ flat = false
 
 [node name="TouchScreenButton" type="TouchScreenButton" parent="ButtonGroup/Button"]
 
-transform/pos = Vector2( 275, 10 )
-transform/scale = Vector2( 30, 1 )
+transform/pos = Vector2( 275, 25 )
+transform/scale = Vector2( 30, 2.75 )
 normal = null
 pressed = null
 bitmask = null
